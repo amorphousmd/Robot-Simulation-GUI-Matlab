@@ -22,7 +22,7 @@ function varargout = untitled(varargin)
 
 % Edit the above text to modify the response to help untitled
 
-% Last Modified by GUIDE v2.5 10-Oct-2022 14:21:02
+% Last Modified by GUIDE v2.5 10-Oct-2022 13:48:02
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -171,7 +171,6 @@ theta2 = handles.jointAngles.theta2;
 theta3 = handles.jointAngles.theta3;
 theta4 = handles.jointAngles.theta4;
 forwardUpdate(theta1, theta2, theta3, theta4);
-updateEndEffector(hObject, eventdata, handles);
 
 
 % --- Executes during object creation, after setting all properties.
@@ -211,7 +210,6 @@ theta2 = handles.jointAngles.theta2;
 theta3 = handles.jointAngles.theta3;
 theta4 = handles.jointAngles.theta4;
 forwardUpdate(theta1, theta2, theta3, theta4);
-updateEndEffector(hObject, eventdata, handles);
 
 % --- Executes during object creation, after setting all properties.
 function editTheta2_CreateFcn(hObject, eventdata, handles)
@@ -250,7 +248,6 @@ theta2 = handles.jointAngles.theta2;
 theta3 = handles.jointAngles.theta3;
 theta4 = handles.jointAngles.theta4;
 forwardUpdate(theta1, theta2, theta3, theta4);
-updateEndEffector(hObject, eventdata, handles);
 
 
 % --- Executes during object creation, after setting all properties.
@@ -290,7 +287,6 @@ theta2 = handles.jointAngles.theta2;
 theta3 = handles.jointAngles.theta3;
 theta4 = handles.jointAngles.theta4;
 forwardUpdate(theta1, theta2, theta3, theta4);
-updateEndEffector(hObject, eventdata, handles);
 
 
 % --- Executes during object creation, after setting all properties.
@@ -354,7 +350,8 @@ theta2 = handles.jointAngles.theta2;
 theta3 = handles.jointAngles.theta3;
 theta4 = handles.jointAngles.theta4;
 forwardUpdate(theta1, theta2, theta3, theta4);
-updateEndEffector(hObject, eventdata, handles);
+updateEndEffector();
+
 
 % --- Executes during object creation, after setting all properties.
 function sliderTheta1_CreateFcn(hObject, eventdata, handles)
@@ -387,7 +384,6 @@ theta2 = handles.jointAngles.theta2;
 theta3 = handles.jointAngles.theta3;
 theta4 = handles.jointAngles.theta4;
 forwardUpdate(theta1, theta2, theta3, theta4);
-updateEndEffector(hObject, eventdata, handles);
 
 
 % --- Executes during object creation, after setting all properties.
@@ -421,7 +417,6 @@ theta2 = handles.jointAngles.theta2;
 theta3 = handles.jointAngles.theta3;
 theta4 = handles.jointAngles.theta4;
 forwardUpdate(theta1, theta2, theta3, theta4);
-updateEndEffector(hObject, eventdata, handles);
 
 
 % --- Executes during object creation, after setting all properties.
@@ -455,7 +450,6 @@ theta2 = handles.jointAngles.theta2;
 theta3 = handles.jointAngles.theta3;
 theta4 = handles.jointAngles.theta4;
 forwardUpdate(theta1, theta2, theta3, theta4);
-updateEndEffector(hObject, eventdata, handles);
 
 
 % --- Executes during object creation, after setting all properties.
@@ -492,21 +486,14 @@ theta2 = handles.jointAngles.theta2;
 theta3 = handles.jointAngles.theta3;
 theta4 = handles.jointAngles.theta4;
 forwardUpdate(theta1, theta2, theta3, theta4);
-updateEndEffector(hObject, eventdata, handles);
 
-function updateEndEffector(hObject, eventdata, handles)
+function updateEndEffector()
 global endEffectorX;
 global endEffectorY;
 global endEffectorZ;
-global endEffectorRoll;
-global endEffectorPitch;
-global endEffectorYaw;
-set(handles.editEndEffectorX, 'String', num2str(endEffectorX));
-set(handles.editEndEffectorY, 'String', num2str(endEffectorY));
-set(handles.editEndEffectorZ, 'String', num2str(endEffectorZ));
-set(handles.editEndEffectorRoll, 'String', num2str(endEffectorRoll / pi * 180));
-set(handles.editEndEffectorPitch, 'String', num2str(endEffectorPitch / pi * 180));
-set(handles.editEndEffectorYaw, 'String', num2str(endEffectorYaw / pi * 180));
+set(handles.editTheta1, 'String', double2str(endEffectorX));
+set(handles.editEndEffectorY, 'String', double2str(endEffectorY));
+set(handles.editEndEffectorZ, 'String', double2str(endEffectorZ));
 
 
 
@@ -568,75 +555,6 @@ function editEndEffectorZ_Callback(hObject, eventdata, handles)
 % --- Executes during object creation, after setting all properties.
 function editEndEffectorZ_CreateFcn(hObject, eventdata, handles)
 % hObject    handle to editEndEffectorZ (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    empty - handles not created until after all CreateFcns called
-
-% Hint: edit controls usually have a white background on Windows.
-%       See ISPC and COMPUTER.
-if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
-    set(hObject,'BackgroundColor','white');
-end
-
-
-
-function editEndEffectorRoll_Callback(hObject, eventdata, handles)
-% hObject    handle to editEndEffectorRoll (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-% Hints: get(hObject,'String') returns contents of editEndEffectorRoll as text
-%        str2double(get(hObject,'String')) returns contents of editEndEffectorRoll as a double
-
-
-% --- Executes during object creation, after setting all properties.
-function editEndEffectorRoll_CreateFcn(hObject, eventdata, handles)
-% hObject    handle to editEndEffectorRoll (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    empty - handles not created until after all CreateFcns called
-
-% Hint: edit controls usually have a white background on Windows.
-%       See ISPC and COMPUTER.
-if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
-    set(hObject,'BackgroundColor','white');
-end
-
-
-
-function editEndEffectorPitch_Callback(hObject, eventdata, handles)
-% hObject    handle to editEndEffectorPitch (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-% Hints: get(hObject,'String') returns contents of editEndEffectorPitch as text
-%        str2double(get(hObject,'String')) returns contents of editEndEffectorPitch as a double
-
-
-% --- Executes during object creation, after setting all properties.
-function editEndEffectorPitch_CreateFcn(hObject, eventdata, handles)
-% hObject    handle to editEndEffectorPitch (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    empty - handles not created until after all CreateFcns called
-
-% Hint: edit controls usually have a white background on Windows.
-%       See ISPC and COMPUTER.
-if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
-    set(hObject,'BackgroundColor','white');
-end
-
-
-
-function editEndEffectorYaw_Callback(hObject, eventdata, handles)
-% hObject    handle to editEndEffectorYaw (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-% Hints: get(hObject,'String') returns contents of editEndEffectorYaw as text
-%        str2double(get(hObject,'String')) returns contents of editEndEffectorYaw as a double
-
-
-% --- Executes during object creation, after setting all properties.
-function editEndEffectorYaw_CreateFcn(hObject, eventdata, handles)
-% hObject    handle to editEndEffectorYaw (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    empty - handles not created until after all CreateFcns called
 

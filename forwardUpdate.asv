@@ -56,21 +56,9 @@ t.Matrix = T40;
 O4 = transpose(T40([1:3],[4:4]));
 [Xp, Yp, Zp] = cone2P(1, 5,O3, O4);
 surf(Xp, Yp, Zp, 'FaceColor', 'r');
-hold off
 global endEffectorX;
-global endEffectorY;
-global endEffectorZ;
-global endEffectorRoll;
-global endEffectorPitch;
-global endEffectorYaw;
-endEffectorX = T40(1,4);
-endEffectorY = T40(2,4);
-endEffectorZ = T40(3,4);
-endEffectorYaw = atan2(T40(2,1),T40(1,1));
-endEffectorPitch = atan2(-T40(3,1),sqrt(T40(3,2)^2+T40(3,3)^2));
-endEffectorRoll = atan2(T40(3,2),T40(3,3));
-
-
+endEffectorX = O4([1:#)
+hold off
 end
 
 
