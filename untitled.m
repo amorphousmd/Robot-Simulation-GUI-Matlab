@@ -22,7 +22,7 @@ function varargout = untitled(varargin)
 
 % Edit the above text to modify the response to help untitled
 
-% Last Modified by GUIDE v2.5 10-Oct-2022 14:21:02
+% Last Modified by GUIDE v2.5 24-Oct-2022 13:24:56
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -320,6 +320,16 @@ handles.jointAngles.theta2 = 90;
 handles.jointAngles.theta3 = -90;
 handles.jointAngles.theta4 = 0;
 
+handles.inverseAngles.theta1 = 0;
+handles.inverseAngles.theta2 = 90;
+handles.inverseAngles.theta3 = -90;
+handles.inverseAngles.theta4 = 0;
+
+handles.inverseAngles.EEfectorX = 27.4;
+handles.inverseAngles.EEfectorY = 0;
+handles.inverseAngles.EEfectorZ = 20.5;
+handles.inverseAngles.EEfectorPitch = 0;
+
 set(handles.editTheta1, 'String', handles.jointAngles.theta1);
 set(handles.editTheta2, 'String', handles.jointAngles.theta2);
 set(handles.editTheta3, 'String', handles.jointAngles.theta3);
@@ -485,6 +495,12 @@ set(handles.editTheta2, 'String', handles.jointAngles.theta2);
 set(handles.editTheta3, 'String', handles.jointAngles.theta3);
 set(handles.editTheta4, 'String', handles.jointAngles.theta4);
 
+set(handles.sliderTheta1, 'Value', handles.jointAngles.theta1);
+set(handles.sliderTheta2, 'Value', handles.jointAngles.theta2);
+set(handles.sliderTheta3, 'Value', handles.jointAngles.theta3);
+set(handles.sliderTheta4, 'Value', handles.jointAngles.theta4);
+
+
 % Update handles structure
 guidata(handles.figure1, handles);
 theta1 = handles.jointAngles.theta1;
@@ -645,3 +661,160 @@ function editEndEffectorYaw_CreateFcn(hObject, eventdata, handles)
 if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
     set(hObject,'BackgroundColor','white');
 end
+
+
+
+function editInverseX_Callback(hObject, eventdata, handles)
+% hObject    handle to editInverseX (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: get(hObject,'String') returns contents of editInverseX as text
+%        str2double(get(hObject,'String')) returns contents of editInverseX as a double
+EEfectorX = str2double(get(hObject, 'String'));
+if isnan(EEfectorX)
+    set(hObject, 'String', 0);
+    errordlg('Input must be a number','Error');
+end
+
+% Save the new volume value
+handles.inverseAngles.EEfectorX = EEfectorX;
+guidata(hObject,handles)
+
+
+% --- Executes during object creation, after setting all properties.
+function editInverseX_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to editInverseX (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: edit controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+
+
+function editInverseY_Callback(hObject, eventdata, handles)
+% hObject    handle to editInverseY (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: get(hObject,'String') returns contents of editInverseY as text
+%        str2double(get(hObject,'String')) returns contents of editInverseY as a double
+EEfectorY = str2double(get(hObject, 'String'));
+if isnan(EEfectorY)
+    set(hObject, 'String', 0);
+    errordlg('Input must be a number','Error');
+end
+
+% Save the new volume value
+handles.inverseAngles.EEfectorY = EEfectorY;
+guidata(hObject,handles)
+
+
+% --- Executes during object creation, after setting all properties.
+function editInverseY_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to editInverseY (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: edit controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+
+
+function editInverseZ_Callback(hObject, eventdata, handles)
+% hObject    handle to editInverseZ (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: get(hObject,'String') returns contents of editInverseZ as text
+%        str2double(get(hObject,'String')) returns contents of editInverseZ as a double
+EEfectorZ = str2double(get(hObject, 'String'));
+if isnan(EEfectorZ)
+    set(hObject, 'String', 0);
+    errordlg('Input must be a number','Error');
+end
+
+% Save the new volume value
+handles.inverseAngles.EEfectorZ = EEfectorZ;
+guidata(hObject,handles)
+
+
+% --- Executes during object creation, after setting all properties.
+function editInverseZ_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to editInverseZ (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: edit controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+
+
+function editInversePitch_Callback(hObject, eventdata, handles)
+% hObject    handle to editInversePitch (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: get(hObject,'String') returns contents of editInversePitch as text
+%        str2double(get(hObject,'String')) returns contents of editInversePitch as a double
+EEfectorPitch = str2double(get(hObject, 'String'));
+if isnan(EEfectorPitch)
+    set(hObject, 'String', 0);
+    errordlg('Input must be a number','Error');
+end
+
+% Save the new volume value
+handles.inverseAngles.EEfectorPitch = EEfectorPitch;
+guidata(hObject,handles)
+
+
+% --- Executes during object creation, after setting all properties.
+function editInversePitch_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to editInversePitch (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: edit controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+
+% --- Executes on button press in btnCalculateInverseKinematics.
+function btnCalculateInverseKinematics_Callback(hObject, eventdata, handles)
+% hObject    handle to btnCalculateInverseKinematics (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+offsetAngle = 10.6197;
+EEffectorX = handles.inverseAngles.EEfectorX
+EEffectorY = handles.inverseAngles.EEfectorY
+EEffectorZ = handles.inverseAngles.EEfectorZ
+pitch = handles.inverseAngles.EEfectorPitch
+
+theta1 = atan2(EEffectorY, EEffectorX) * 180 / pi
+
+Y = EEffectorZ - 7.7;
+X = sqrt(EEffectorX * EEffectorX + EEffectorY * EEffectorY) ;
+beta = -pitch;
+% beta = pitch;
+P2x = X - 12.6 * cos(beta * pi / 180)
+P2y = Y - 12.6 * sin(beta * pi / 180)
+theta3 = acos((P2x*P2x + P2y*P2y - 13.0231*13.0231 - 12.4*12.4) / (2 * 13.0231 * 12.4)) * 180 / pi 
+theta2 = (atan(P2y/ P2x) - atan2( (12.4 * sin(theta3 * pi / 180)) , (13.0231 + 12.4 * cos(theta3 * pi / 180))))* 180 / pi + 10.6197
+theta4 = beta - theta3 - theta2
+theta3 = theta3 - 10.6197
+theta4 = theta4 + 10.6197
+forwardUpdate(theta1, theta2, theta3, theta4);
+updateEndEffector(hObject, eventdata, handles);
+
