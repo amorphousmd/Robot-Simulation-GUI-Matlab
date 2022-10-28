@@ -22,7 +22,7 @@ function varargout = untitled(varargin)
 
 % Edit the above text to modify the response to help untitled
 
-% Last Modified by GUIDE v2.5 24-Oct-2022 13:24:56
+% Last Modified by GUIDE v2.5 28-Oct-2022 14:37:18
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -325,15 +325,25 @@ handles.inverseAngles.theta2 = 90;
 handles.inverseAngles.theta3 = -90;
 handles.inverseAngles.theta4 = 0;
 
-handles.inverseAngles.EEfectorX = 27.4;
-handles.inverseAngles.EEfectorY = 0;
-handles.inverseAngles.EEfectorZ = 20.5;
-handles.inverseAngles.EEfectorPitch = 0;
+handles.inverseAngles.EEffectorX = 27.4;
+handles.inverseAngles.EEffectorY = 0;
+handles.inverseAngles.EEffectorZ = 20.5;
+handles.inverseAngles.EEffectorPitch = 0;
 
 set(handles.editTheta1, 'String', handles.jointAngles.theta1);
 set(handles.editTheta2, 'String', handles.jointAngles.theta2);
 set(handles.editTheta3, 'String', handles.jointAngles.theta3);
 set(handles.editTheta4, 'String', handles.jointAngles.theta4);
+
+set(handles.editInverseX, 'String', handles.inverseAngles.EEffectorX);
+set(handles.editInverseY, 'String', handles.inverseAngles.EEffectorY);
+set(handles.editInverseZ, 'String', handles.inverseAngles.EEffectorZ);
+set(handles.editInversePitch, 'String', handles.inverseAngles.EEffectorPitch);
+
+set(handles.sliderInverseX, 'Value', handles.inverseAngles.EEffectorX);
+set(handles.sliderInverseY, 'Value', handles.inverseAngles.EEffectorY);
+set(handles.sliderInverseZ, 'Value', handles.inverseAngles.EEffectorZ);
+set(handles.sliderInversePitch, 'Value', handles.inverseAngles.EEffectorPitch);
 
 % Update handles structure
 guidata(handles.figure1, handles);
@@ -524,6 +534,38 @@ set(handles.editEndEffectorRoll, 'String', num2str(endEffectorRoll / pi * 180));
 set(handles.editEndEffectorPitch, 'String', num2str(endEffectorPitch / pi * 180));
 set(handles.editEndEffectorYaw, 'String', num2str(endEffectorYaw / pi * 180));
 
+function calculateInverseKinematics(hObject, eventdata, handles)
+offsetAngle = 10.6197;
+EEffectorX = handles.inverseAngles.EEffectorX
+EEffectorY = handles.inverseAngles.EEffectorY
+EEffectorZ = handles.inverseAngles.EEffectorZ
+pitch = handles.inverseAngles.EEffectorPitch
+
+theta1 = atan2(EEffectorY, EEffectorX) * 180 / pi
+
+Y = EEffectorZ - 7.7;
+X = sqrt(EEffectorX * EEffectorX + EEffectorY * EEffectorY) ;
+beta = -pitch;
+% beta = pitch;
+P2x = X - 12.6 * cos(beta * pi / 180)
+P2y = Y - 12.6 * sin(beta * pi / 180)
+theta3 = acos((P2x*P2x + P2y*P2y - 13.0231*13.0231 - 12.4*12.4) / (2 * 13.0231 * 12.4)) * 180 / pi 
+theta2 = (atan(P2y/ P2x) - atan2( (12.4 * sin(theta3 * pi / 180)) , (13.0231 + 12.4 * cos(theta3 * pi / 180))))* 180 / pi + 10.6197
+theta4 = beta - theta3 - theta2
+theta3 = theta3 - 10.6197
+theta4 = theta4 + 10.6197
+set(handles.editTheta1,'String',num2str(theta1));
+set(handles.editTheta2,'String',num2str(theta2));
+set(handles.editTheta3,'String',num2str(theta3));
+set(handles.editTheta4,'String',num2str(theta4));
+set(handles.sliderTheta1,'value',theta1);
+set(handles.sliderTheta2,'value',theta2);
+set(handles.sliderTheta3,'value',theta3);
+set(handles.sliderTheta4,'value',theta4);
+guidata(hObject,handles)
+
+forwardUpdate(theta1, theta2, theta3, theta4);
+updateEndEffector(hObject, eventdata, handles);
 
 
 function editEndEffectorX_Callback(hObject, eventdata, handles)
@@ -671,15 +713,16 @@ function editInverseX_Callback(hObject, eventdata, handles)
 
 % Hints: get(hObject,'String') returns contents of editInverseX as text
 %        str2double(get(hObject,'String')) returns contents of editInverseX as a double
-EEfectorX = str2double(get(hObject, 'String'));
-if isnan(EEfectorX)
+EEffectorX = str2double(get(hObject, 'String'));
+if isnan(EEffectorX)
     set(hObject, 'String', 0);
     errordlg('Input must be a number','Error');
 end
 
 % Save the new volume value
-handles.inverseAngles.EEfectorX = EEfectorX;
+handles.inverseAngles.EEffectorX = EEffectorX;
 guidata(hObject,handles)
+calculateInverseKinematics(hObject, eventdata, handles)
 
 
 % --- Executes during object creation, after setting all properties.
@@ -703,15 +746,16 @@ function editInverseY_Callback(hObject, eventdata, handles)
 
 % Hints: get(hObject,'String') returns contents of editInverseY as text
 %        str2double(get(hObject,'String')) returns contents of editInverseY as a double
-EEfectorY = str2double(get(hObject, 'String'));
-if isnan(EEfectorY)
+EEffectorY = str2double(get(hObject, 'String'));
+if isnan(EEffectorY)
     set(hObject, 'String', 0);
     errordlg('Input must be a number','Error');
 end
 
 % Save the new volume value
-handles.inverseAngles.EEfectorY = EEfectorY;
+handles.inverseAngles.EEffectorY = EEffectorY;
 guidata(hObject,handles)
+calculateInverseKinematics(hObject, eventdata, handles)
 
 
 % --- Executes during object creation, after setting all properties.
@@ -735,15 +779,16 @@ function editInverseZ_Callback(hObject, eventdata, handles)
 
 % Hints: get(hObject,'String') returns contents of editInverseZ as text
 %        str2double(get(hObject,'String')) returns contents of editInverseZ as a double
-EEfectorZ = str2double(get(hObject, 'String'));
-if isnan(EEfectorZ)
+EEffectorZ = str2double(get(hObject, 'String'));
+if isnan(EEffectorZ)
     set(hObject, 'String', 0);
     errordlg('Input must be a number','Error');
 end
 
 % Save the new volume value
-handles.inverseAngles.EEfectorZ = EEfectorZ;
+handles.inverseAngles.EEffectorZ = EEffectorZ;
 guidata(hObject,handles)
+calculateInverseKinematics(hObject, eventdata, handles)
 
 
 % --- Executes during object creation, after setting all properties.
@@ -767,15 +812,17 @@ function editInversePitch_Callback(hObject, eventdata, handles)
 
 % Hints: get(hObject,'String') returns contents of editInversePitch as text
 %        str2double(get(hObject,'String')) returns contents of editInversePitch as a double
-EEfectorPitch = str2double(get(hObject, 'String'));
-if isnan(EEfectorPitch)
+EEffectorPitch = str2double(get(hObject, 'String'));
+if isnan(EEffectorPitch)
     set(hObject, 'String', 0);
     errordlg('Input must be a number','Error');
 end
 
 % Save the new volume value
-handles.inverseAngles.EEfectorPitch = EEfectorPitch;
+handles.inverseAngles.EEffectorPitch = EEffectorPitch;
 guidata(hObject,handles)
+calculateInverseKinematics(hObject, eventdata, handles)
+
 
 
 % --- Executes during object creation, after setting all properties.
@@ -797,10 +844,10 @@ function btnCalculateInverseKinematics_Callback(hObject, eventdata, handles)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 offsetAngle = 10.6197;
-EEffectorX = handles.inverseAngles.EEfectorX
-EEffectorY = handles.inverseAngles.EEfectorY
-EEffectorZ = handles.inverseAngles.EEfectorZ
-pitch = handles.inverseAngles.EEfectorPitch
+EEffectorX = handles.inverseAngles.EEffectorX
+EEffectorY = handles.inverseAngles.EEffectorY
+EEffectorZ = handles.inverseAngles.EEffectorZ
+pitch = handles.inverseAngles.EEffectorPitch
 
 theta1 = atan2(EEffectorY, EEffectorX) * 180 / pi
 
@@ -815,6 +862,133 @@ theta2 = (atan(P2y/ P2x) - atan2( (12.4 * sin(theta3 * pi / 180)) , (13.0231 + 1
 theta4 = beta - theta3 - theta2
 theta3 = theta3 - 10.6197
 theta4 = theta4 + 10.6197
+set(handles.editTheta1,'String',num2str(theta1));
+set(handles.editTheta2,'String',num2str(theta2));
+set(handles.editTheta3,'String',num2str(theta3));
+set(handles.editTheta4,'String',num2str(theta4));
+set(handles.sliderTheta1,'value',theta1);
+set(handles.sliderTheta2,'value',theta2);
+set(handles.sliderTheta3,'value',theta3);
+set(handles.sliderTheta4,'value',theta4);
+guidata(hObject,handles)
+
 forwardUpdate(theta1, theta2, theta3, theta4);
 updateEndEffector(hObject, eventdata, handles);
 
+
+% --- Executes on slider movement.
+function sliderInverseX_Callback(hObject, eventdata, handles)
+% hObject    handle to sliderInverseX (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: get(hObject,'Value') returns position of slider
+%        get(hObject,'Min') and get(hObject,'Max') to determine range of slider
+EEffectorX = get(hObject, 'Value');
+% Save the new density value
+handles.inverseAngles.EEffectorX = EEffectorX;
+set(handles.editInverseX,'String',num2str(EEffectorX));
+guidata(hObject,handles)
+calculateInverseKinematics(hObject, eventdata, handles)
+
+
+
+% --- Executes during object creation, after setting all properties.
+function sliderInverseX_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to sliderInverseX (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: slider controls usually have a light gray background.
+if isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor',[.9 .9 .9]);
+end
+
+
+% --- Executes on slider movement.
+function sliderInverseY_Callback(hObject, eventdata, handles)
+% hObject    handle to sliderInverseY (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: get(hObject,'Value') returns position of slider
+%        get(hObject,'Min') and get(hObject,'Max') to determine range of slider
+EEffectorY = get(hObject, 'Value');
+% Save the new density value
+handles.inverseAngles.EEffectorY = EEffectorY;
+set(handles.editInverseY,'String',num2str(EEffectorY));
+updateEndEffector(hObject, eventdata, handles)
+guidata(hObject,handles)
+calculateInverseKinematics(hObject, eventdata, handles)
+
+
+% --- Executes during object creation, after setting all properties.
+function sliderInverseY_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to sliderInverseY (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: slider controls usually have a light gray background.
+if isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor',[.9 .9 .9]);
+end
+
+
+% --- Executes on slider movement.
+function sliderInverseZ_Callback(hObject, eventdata, handles)
+% hObject    handle to sliderInverseZ (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: get(hObject,'Value') returns position of slider
+%        get(hObject,'Min') and get(hObject,'Max') to determine range of slider
+EEffectorZ = get(hObject, 'Value');
+% Save the new density value
+handles.inverseAngles.EEffectorZ = EEffectorZ;
+set(handles.editInverseZ,'String',num2str(EEffectorZ));
+updateEndEffector(hObject, eventdata, handles)
+guidata(hObject,handles)
+calculateInverseKinematics(hObject, eventdata, handles)
+
+
+
+% --- Executes during object creation, after setting all properties.
+function sliderInverseZ_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to sliderInverseZ (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: slider controls usually have a light gray background.
+if isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor',[.9 .9 .9]);
+end
+
+
+% --- Executes on slider movement.
+function sliderInversePitch_Callback(hObject, eventdata, handles)
+% hObject    handle to sliderInversePitch (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: get(hObject,'Value') returns position of slider
+%        get(hObject,'Min') and get(hObject,'Max') to determine range of slider
+EEffectorPitch = get(hObject, 'Value');
+% Save the new density value
+handles.inverseAngles.EEffectorPitch = EEffectorPitch;
+set(handles.editInversePitch,'String',num2str(EEffectorPitch));
+updateEndEffector(hObject, eventdata, handles)
+guidata(hObject,handles)
+calculateInverseKinematics(hObject, eventdata, handles)
+
+
+
+% --- Executes during object creation, after setting all properties.
+function sliderInversePitch_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to sliderInversePitch (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: slider controls usually have a light gray background.
+if isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor',[.9 .9 .9]);
+end
