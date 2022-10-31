@@ -10,6 +10,15 @@ T4 = createDHmatrix(12.6, 0 , 0, theta4/180*pi);
 T20 = T1*T2*yOffsetMatrix;
 T30 = T1*T2*yOffsetMatrix*T3;
 T40 = T1*T2*yOffsetMatrix*T3*T4;
+global drawCoordsAllow;
+if drawCoordsAllow == 1
+    arrow2P(eye(4));
+    arrow2P(T1);
+    arrow2P(T20);
+    arrow2P(T30);
+    arrow2P(T40);
+end
+
 
 ry_angle = 90*pi/180; 
 Ry = makehgtform('yrotate',ry_angle);
@@ -55,6 +64,7 @@ t.Matrix = T40;
 % s5 = surf(X,Y,Z, 'parent', t);
 O4 = transpose(T40([1:3],[4:4]));
 [Xp, Yp, Zp] = cone2P(1, 5,O3, O4);
+% arrow2P(T40);
 surf(Xp, Yp, Zp, 'FaceColor', 'r');
 hold off
 global endEffectorX;
