@@ -314,16 +314,8 @@ theta1 = handles.jointAngles.theta1;
 theta2 = handles.jointAngles.theta2;
 theta3 = handles.jointAngles.theta3;
 theta4 = handles.jointAngles.theta4;
-forwardUpdateIncrement(theta1, theta2, theta3, theta4);
+forwardUpdate(theta1, theta2, theta3, theta4);
 updateEndEffector(hObject, eventdata, handles);
-global theta1Old
-global theta2Old
-global theta3Old
-global theta4Old
-theta1Old = theta1;
-theta2Old = theta2;
-theta3Old = theta3;
-theta4Old = theta4;
 
 
 % --- Executes during object creation, after setting all properties.
@@ -345,13 +337,6 @@ function initialize_gui(fig_handle, handles, isreset)
 if isfield(handles, 'metricdata') && ~isreset
     return;
 end
-global prevS1;
-global prevS2;
-global prevS3;
-global prevS4;
-global prevS5;
-global prevS6;
-global prevS7;
 global endEffectorX;
 global endEffectorY;
 global endEffectorZ;
@@ -424,16 +409,8 @@ theta1 = handles.jointAngles.theta1;
 theta2 = handles.jointAngles.theta2;
 theta3 = handles.jointAngles.theta3;
 theta4 = handles.jointAngles.theta4;
-forwardUpdateIncrement(theta1, theta2, theta3, theta4);
+forwardUpdate(theta1, theta2, theta3, theta4);
 updateEndEffector(hObject, eventdata, handles);
-global theta1Old
-global theta2Old
-global theta3Old
-global theta4Old
-theta1Old = theta1;
-theta2Old = theta2;
-theta3Old = theta3;
-theta4Old = theta4;
 
 % --- Executes during object creation, after setting all properties.
 function sliderTheta1_CreateFcn(hObject, eventdata, handles)
@@ -465,16 +442,8 @@ theta1 = handles.jointAngles.theta1;
 theta2 = handles.jointAngles.theta2;
 theta3 = handles.jointAngles.theta3;
 theta4 = handles.jointAngles.theta4;
-forwardUpdateIncrement(theta1, theta2, theta3, theta4);
+forwardUpdate(theta1, theta2, theta3, theta4);
 updateEndEffector(hObject, eventdata, handles);
-global theta1Old
-global theta2Old
-global theta3Old
-global theta4Old
-theta1Old = theta1;
-theta2Old = theta2;
-theta3Old = theta3;
-theta4Old = theta4;
 
 
 % --- Executes during object creation, after setting all properties.
@@ -507,16 +476,8 @@ theta1 = handles.jointAngles.theta1;
 theta2 = handles.jointAngles.theta2;
 theta3 = handles.jointAngles.theta3;
 theta4 = handles.jointAngles.theta4;
-forwardUpdateIncrement(theta1, theta2, theta3, theta4);
+forwardUpdate(theta1, theta2, theta3, theta4);
 updateEndEffector(hObject, eventdata, handles);
-global theta1Old
-global theta2Old
-global theta3Old
-global theta4Old
-theta1Old = theta1;
-theta2Old = theta2;
-theta3Old = theta3;
-theta4Old = theta4;
 
 
 % --- Executes during object creation, after setting all properties.
@@ -549,16 +510,8 @@ theta1 = handles.jointAngles.theta1;
 theta2 = handles.jointAngles.theta2;
 theta3 = handles.jointAngles.theta3;
 theta4 = handles.jointAngles.theta4;
-forwardUpdateIncrement(theta1, theta2, theta3, theta4);
+forwardUpdate(theta1, theta2, theta3, theta4);
 updateEndEffector(hObject, eventdata, handles);
-global theta1Old
-global theta2Old
-global theta3Old
-global theta4Old
-theta1Old = theta1;
-theta2Old = theta2;
-theta3Old = theta3;
-theta4Old = theta4;
 
 
 % --- Executes during object creation, after setting all properties.
