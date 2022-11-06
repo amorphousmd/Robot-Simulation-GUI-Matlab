@@ -22,7 +22,7 @@ function varargout = untitled(varargin)
 
 % Edit the above text to modify the response to help untitled
 
-% Last Modified by GUIDE v2.5 31-Oct-2022 15:11:42
+% Last Modified by GUIDE v2.5 06-Nov-2022 23:40:51
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -355,8 +355,40 @@ global prevS7;
 global endEffectorX;
 global endEffectorY;
 global endEffectorZ;
+global prevX10;
+global prevX20;
+global prevY10;
+global prevY20;
+global prevZ10;
+global prevZ20;
+global prevX11;
+global prevX21;
+global prevY11;
+global prevY21;
+global prevZ11;
+global prevZ21;
+global prevX12;
+global prevX22;
+global prevY12;
+global prevY22;
+global prevZ12;
+global prevZ22;
+global prevX13;
+global prevX23;
+global prevY13;
+global prevY23;
+global prevZ13;
+global prevZ23;
+global prevX14;
+global prevX24;
+global prevY14;
+global prevY24;
+global prevZ14;
+global prevZ24;
 global drawCoordsAllow;
+global drawPathAllow;
 drawCoordsAllow = 0;
+drawPathAllow = 0;
 global theta1Old;
 global theta2Old;
 global theta3Old;
@@ -424,7 +456,7 @@ theta1 = handles.jointAngles.theta1;
 theta2 = handles.jointAngles.theta2;
 theta3 = handles.jointAngles.theta3;
 theta4 = handles.jointAngles.theta4;
-forwardUpdateIncrement(theta1, theta2, theta3, theta4);
+forwardUpdate(theta1, theta2, theta3, theta4);
 updateEndEffector(hObject, eventdata, handles);
 global theta1Old
 global theta2Old
@@ -465,7 +497,7 @@ theta1 = handles.jointAngles.theta1;
 theta2 = handles.jointAngles.theta2;
 theta3 = handles.jointAngles.theta3;
 theta4 = handles.jointAngles.theta4;
-forwardUpdateIncrement(theta1, theta2, theta3, theta4);
+forwardUpdate(theta1, theta2, theta3, theta4);
 updateEndEffector(hObject, eventdata, handles);
 global theta1Old
 global theta2Old
@@ -507,7 +539,7 @@ theta1 = handles.jointAngles.theta1;
 theta2 = handles.jointAngles.theta2;
 theta3 = handles.jointAngles.theta3;
 theta4 = handles.jointAngles.theta4;
-forwardUpdateIncrement(theta1, theta2, theta3, theta4);
+forwardUpdate(theta1, theta2, theta3, theta4);
 updateEndEffector(hObject, eventdata, handles);
 global theta1Old
 global theta2Old
@@ -549,7 +581,7 @@ theta1 = handles.jointAngles.theta1;
 theta2 = handles.jointAngles.theta2;
 theta3 = handles.jointAngles.theta3;
 theta4 = handles.jointAngles.theta4;
-forwardUpdateIncrement(theta1, theta2, theta3, theta4);
+forwardUpdate(theta1, theta2, theta3, theta4);
 updateEndEffector(hObject, eventdata, handles);
 global theta1Old
 global theta2Old
@@ -578,6 +610,15 @@ function resetButton_Callback(hObject, eventdata, handles)
 % hObject    handle to resetButton (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
+hold off
+global theta1Old;
+global theta2Old;
+global theta3Old;
+global theta4Old;
+theta1Old = 0;
+theta2Old = 90;
+theta3Old = -90;
+theta4Old = 0;
 handles.jointAngles.theta1 = 0;
 handles.jointAngles.theta2 = 90;
 handles.jointAngles.theta3 = -90;
@@ -1087,3 +1128,15 @@ function checkbox1_Callback(hObject, eventdata, handles)
 state = get(hObject,'Value')
 global drawCoordsAllow;
 drawCoordsAllow = state;
+
+
+% --- Executes on button press in checkbox2.
+function checkbox2_Callback(hObject, eventdata, handles)
+% hObject    handle to checkbox2 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hint: get(hObject,'Value') returns toggle state of checkbox2
+state = get(hObject,'Value')
+global drawPathAllow;
+drawPathAllow = state;
