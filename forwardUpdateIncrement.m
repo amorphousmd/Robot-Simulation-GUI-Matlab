@@ -12,7 +12,7 @@ theta3Points = linspace(theta3Old, theta3, 20)
 theta4Points = linspace(theta4Old, theta4, 20)
 for i = 1:20
     forwardUpdate(theta1Points(i), theta2Points(i), theta3Points(i), theta4Points(i))
-    pause(0.0025)
+    pause(0.0001)
 end
 
 end
