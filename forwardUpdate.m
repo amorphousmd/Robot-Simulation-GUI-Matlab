@@ -96,14 +96,14 @@ for d = 1
     if drawCoordsAllow == 1
     % Coords Base
     T0 = [1 0 0 0; 0 1 0 0; 0 0 1 0; 0 0 0 1];
-    center = transpose(T0([1:3],[4:4]))
-    XEndPoint = center + transpose(T0([1:3],[1:1]) * 7)
-    YEndPoint = center + transpose(T0([1:3],[2:2]) * 7)
-    ZEndPoint = center + transpose(T0([1:3],[3:3]) * 7)
+    center = transpose(T0([1:3],[4:4]));
+    XEndPoint = center + transpose(T0([1:3],[1:1]) * 7);
+    YEndPoint = center + transpose(T0([1:3],[2:2]) * 7);
+    ZEndPoint = center + transpose(T0([1:3],[3:3]) * 7);
 
     % X Arrow
-    midpoint = center + (XEndPoint-center) * 0.8
-    [Xp, Yp, Zp] = cylinder2P(0.5,4,center,midpoint)
+    midpoint = center + (XEndPoint-center) * 0.8;
+    [Xp, Yp, Zp] = cylinder2P(0.5,4,center,midpoint);
     prevX10 = surf(Xp, Yp, Zp, 'FaceColor', 'r');
     hold on;
     [Xp, Yp, Zp] = cone2P(0.8,4,midpoint,XEndPoint);
@@ -111,7 +111,7 @@ for d = 1
     hold on;
 
     % Y Arrow
-    midpoint = center + (YEndPoint-center) * 0.8
+    midpoint = center + (YEndPoint-center) * 0.8;
     [Xp, Yp, Zp] = cylinder2P(0.5,4,center,midpoint);
     prevY10 = surf(Xp, Yp, Zp, 'FaceColor', 'g');
     hold on;
@@ -120,7 +120,7 @@ for d = 1
     hold on;
 
     % Z Arrow
-    midpoint = center + (ZEndPoint-center) * 0.8
+    midpoint = center + (ZEndPoint-center) * 0.8;
     [Xp, Yp, Zp] = cylinder2P(0.5,4,center,midpoint);
     prevZ10 = surf(Xp, Yp, Zp, 'FaceColor', 'b');
     hold on;
@@ -130,14 +130,14 @@ for d = 1
 
 
     % Coords 1
-    center = transpose(T1([1:3],[4:4]))
-    XEndPoint = center + transpose(T1([1:3],[1:1]) * 7)
-    YEndPoint = center + transpose(T1([1:3],[2:2]) * 7)
-    ZEndPoint = center + transpose(T1([1:3],[3:3]) * 7)
+    center = transpose(T1([1:3],[4:4]));
+    XEndPoint = center + transpose(T1([1:3],[1:1]) * 7);
+    YEndPoint = center + transpose(T1([1:3],[2:2]) * 7);
+    ZEndPoint = center + transpose(T1([1:3],[3:3]) * 7);
 
     % X Arrow
-    midpoint = center + (XEndPoint-center) * 0.8
-    [Xp, Yp, Zp] = cylinder2P(0.5,4,center,midpoint)
+    midpoint = center + (XEndPoint-center) * 0.8;
+    [Xp, Yp, Zp] = cylinder2P(0.5,4,center,midpoint);
     prevX11 = surf(Xp, Yp, Zp, 'FaceColor', 'r');
     hold on;
     [Xp, Yp, Zp] = cone2P(0.8,4,midpoint,XEndPoint);
@@ -145,7 +145,7 @@ for d = 1
     hold on;
 
     % Y Arrow
-    midpoint = center + (YEndPoint-center) * 0.8
+    midpoint = center + (YEndPoint-center) * 0.8;
     [Xp, Yp, Zp] = cylinder2P(0.5,4,center,midpoint);
     prevY11 = surf(Xp, Yp, Zp, 'FaceColor', 'g');
     hold on;
@@ -154,7 +154,7 @@ for d = 1
     hold on;
 
     % Z Arrow
-    midpoint = center + (ZEndPoint-center) * 0.8
+    midpoint = center + (ZEndPoint-center) * 0.8;
     [Xp, Yp, Zp] = cylinder2P(0.5,4,center,midpoint);
     prevZ11 = surf(Xp, Yp, Zp, 'FaceColor', 'b');
     hold on;
@@ -163,14 +163,14 @@ for d = 1
     hold on;
 
     % Coords 2
-    center = transpose(T20([1:3],[4:4]))
-    XEndPoint = center + transpose(T20([1:3],[1:1]) * 7)
-    YEndPoint = center + transpose(T20([1:3],[2:2]) * 7)
-    ZEndPoint = center + transpose(T20([1:3],[3:3]) * 7)
+    center = transpose(T20([1:3],[4:4]));
+    XEndPoint = center + transpose(T20([1:3],[1:1]) * 7);
+    YEndPoint = center + transpose(T20([1:3],[2:2]) * 7);
+    ZEndPoint = center + transpose(T20([1:3],[3:3]) * 7);
 
     % X Arrow
-    midpoint = center + (XEndPoint-center) * 0.8
-    [Xp, Yp, Zp] = cylinder2P(0.5,4,center,midpoint)
+    midpoint = center + (XEndPoint-center) * 0.8;
+    [Xp, Yp, Zp] = cylinder2P(0.5,4,center,midpoint);
     prevX12 = surf(Xp, Yp, Zp, 'FaceColor', 'r');
     hold on;
     [Xp, Yp, Zp] = cone2P(0.8,4,midpoint,XEndPoint);
@@ -178,7 +178,7 @@ for d = 1
     hold on;
 
     % Y Arrow
-    midpoint = center + (YEndPoint-center) * 0.8
+    midpoint = center + (YEndPoint-center) * 0.8;
     [Xp, Yp, Zp] = cylinder2P(0.5,4,center,midpoint);
     prevY12 = surf(Xp, Yp, Zp, 'FaceColor', 'g');
     hold on;
@@ -187,7 +187,7 @@ for d = 1
     hold on;
 
     % Z Arrow
-    midpoint = center + (ZEndPoint-center) * 0.8
+    midpoint = center + (ZEndPoint-center) * 0.8;
     [Xp, Yp, Zp] = cylinder2P(0.5,4,center,midpoint);
     prevZ12 = surf(Xp, Yp, Zp, 'FaceColor', 'b');
     hold on;
@@ -196,14 +196,14 @@ for d = 1
     hold on;
 
     % Coords 3
-    center = transpose(T30([1:3],[4:4]))
-    XEndPoint = center + transpose(T30([1:3],[1:1]) * 7)
-    YEndPoint = center + transpose(T30([1:3],[2:2]) * 7)
-    ZEndPoint = center + transpose(T30([1:3],[3:3]) * 7)
+    center = transpose(T30([1:3],[4:4]));
+    XEndPoint = center + transpose(T30([1:3],[1:1]) * 7);
+    YEndPoint = center + transpose(T30([1:3],[2:2]) * 7);
+    ZEndPoint = center + transpose(T30([1:3],[3:3]) * 7);
 
     % X Arrow
-    midpoint = center + (XEndPoint-center) * 0.8
-    [Xp, Yp, Zp] = cylinder2P(0.5,4,center,midpoint)
+    midpoint = center + (XEndPoint-center) * 0.8;
+    [Xp, Yp, Zp] = cylinder2P(0.5,4,center,midpoint);
     prevX13 = surf(Xp, Yp, Zp, 'FaceColor', 'r');
     hold on;
     [Xp, Yp, Zp] = cone2P(0.8,4,midpoint,XEndPoint);
@@ -211,7 +211,7 @@ for d = 1
     hold on;
 
     % Y Arrow
-    midpoint = center + (YEndPoint-center) * 0.8
+    midpoint = center + (YEndPoint-center) * 0.8;
     [Xp, Yp, Zp] = cylinder2P(0.5,4,center,midpoint);
     prevY13 = surf(Xp, Yp, Zp, 'FaceColor', 'g');
     hold on;
@@ -220,7 +220,7 @@ for d = 1
     hold on;
 
     % Z Arrow
-    midpoint = center + (ZEndPoint-center) * 0.8
+    midpoint = center + (ZEndPoint-center) * 0.8;
     [Xp, Yp, Zp] = cylinder2P(0.5,4,center,midpoint);
     prevZ13 = surf(Xp, Yp, Zp, 'FaceColor', 'b');
     hold on;
@@ -229,14 +229,14 @@ for d = 1
     hold on;
 
     % Coords 4
-    center = transpose(T40([1:3],[4:4]))
-    XEndPoint = center + transpose(T40([1:3],[1:1]) * 7)
-    YEndPoint = center + transpose(T40([1:3],[2:2]) * 7)
-    ZEndPoint = center + transpose(T40([1:3],[3:3]) * 7)
+    center = transpose(T40([1:3],[4:4]));
+    XEndPoint = center + transpose(T40([1:3],[1:1]) * 7);
+    YEndPoint = center + transpose(T40([1:3],[2:2]) * 7);
+    ZEndPoint = center + transpose(T40([1:3],[3:3]) * 7);
 
     % X Arrow
-    midpoint = center + (XEndPoint-center) * 0.8
-    [Xp, Yp, Zp] = cylinder2P(0.5,4,center,midpoint)
+    midpoint = center + (XEndPoint-center) * 0.8;
+    [Xp, Yp, Zp] = cylinder2P(0.5,4,center,midpoint);
     prevX14 = surf(Xp, Yp, Zp, 'FaceColor', 'r');
     hold on;
     [Xp, Yp, Zp] = cone2P(0.8,4,midpoint,XEndPoint);
@@ -244,7 +244,7 @@ for d = 1
     hold on;
 
     % Y Arrow
-    midpoint = center + (YEndPoint-center) * 0.8
+    midpoint = center + (YEndPoint-center) * 0.8;
     [Xp, Yp, Zp] = cylinder2P(0.5,4,center,midpoint);
     prevY14 = surf(Xp, Yp, Zp, 'FaceColor', 'g');
     hold on;
@@ -253,7 +253,7 @@ for d = 1
     hold on;
 
     % Z Arrow
-    midpoint = center + (ZEndPoint-center) * 0.8
+    midpoint = center + (ZEndPoint-center) * 0.8;
     [Xp, Yp, Zp] = cylinder2P(0.5,4,center,midpoint);
     prevZ14 = surf(Xp, Yp, Zp, 'FaceColor', 'b');
     hold on;

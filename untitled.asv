@@ -22,7 +22,7 @@ function varargout = untitled(varargin)
 
 % Edit the above text to modify the response to help untitled
 
-% Last Modified by GUIDE v2.5 12-Nov-2022 01:39:24
+% Last Modified by GUIDE v2.5 11-Nov-2022 15:36:08
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -1284,12 +1284,6 @@ EEffectorY2 = handles.interpolateVars.EEffectorY;
 EEffectorZ2 = handles.interpolateVars.EEffectorZ;
 pitch2 = handles.interpolateVars.EEffectorPitch;
 pmax = sqrt((EEffectorX2 - EEffectorX1)^2 + (EEffectorY2 - EEffectorY1)^2 + (EEffectorZ2 - EEffectorZ1)^2)
-amax = 10;
-vmax = 5;
-[x, y1, y2, y3] = createProfile(pmax, vmax, amax)
-hold(handles.axes1,'on')
-plot(handles.axes1, x, y1)
-hold(handles.axes2,'on')
-plot(handles.axes2, x, y2)
-hold(handles.axes3,'on')
-plot(handles.axes3, x, y3)
+amax = 100;
+vmax = 1
+
