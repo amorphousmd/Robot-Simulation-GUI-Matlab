@@ -691,6 +691,39 @@ guidata(hObject,handles)
 forwardUpdate(theta1, theta2, theta3, theta4);
 updateEndEffector(hObject, eventdata, handles);
 
+function calculateInverseKinematicsPath(hObject, eventdata, handles, EEffectorX, EEffectorY, EEffectorZ, pitch)
+offsetAngle = 10.6197;
+% EEffectorX = handles.inverseAngles.EEffectorX
+% EEffectorY = handles.inverseAngles.EEffectorY
+% EEffectorZ = handles.inverseAngles.EEffectorZ
+% pitch = handles.inverseAngles.EEffectorPitch
+
+theta1 = atan2(EEffectorY, EEffectorX) * 180 / pi
+
+Y = EEffectorZ - 7.7;
+X = sqrt(EEffectorX * EEffectorX + EEffectorY * EEffectorY) ;
+beta = -pitch;
+% beta = pitch;
+P2x = X - 12.6 * cos(beta * pi / 180)
+P2y = Y - 12.6 * sin(beta * pi / 180)
+theta3 = acos((P2x*P2x + P2y*P2y - 13.0231*13.0231 - 12.4*12.4) / (2 * 13.0231 * 12.4)) * 180 / pi 
+theta2 = (atan(P2y/ P2x) - atan2( (12.4 * sin(theta3 * pi / 180)) , (13.0231 + 12.4 * cos(theta3 * pi / 180))))* 180 / pi + 10.6197
+theta4 = beta - theta3 - theta2
+theta3 = theta3 - 10.6197
+theta4 = theta4 + 10.6197
+set(handles.editTheta1,'String',num2str(theta1));
+set(handles.editTheta2,'String',num2str(theta2));
+set(handles.editTheta3,'String',num2str(theta3));
+set(handles.editTheta4,'String',num2str(theta4));
+set(handles.sliderTheta1,'value',theta1);
+set(handles.sliderTheta2,'value',theta2);
+set(handles.sliderTheta3,'value',theta3);
+set(handles.sliderTheta4,'value',theta4);
+guidata(hObject,handles)
+
+forwardUpdate(theta1, theta2, theta3, theta4);
+updateEndEffector(hObject, eventdata, handles);
+
 
 function editEndEffectorX_Callback(hObject, eventdata, handles)
 % hObject    handle to editEndEffectorX (see GCBO)
@@ -1285,11 +1318,36 @@ EEffectorZ2 = handles.interpolateVars.EEffectorZ;
 pitch2 = handles.interpolateVars.EEffectorPitch;
 pmax = sqrt((EEffectorX2 - EEffectorX1)^2 + (EEffectorY2 - EEffectorY1)^2 + (EEffectorZ2 - EEffectorZ1)^2)
 amax = 10;
-vmax = 5;
-[x, y1, y2, y3] = createProfile(pmax, vmax, amax)
-hold(handles.axes1,'on')
-plot(handles.axes1, x, y1)
-hold(handles.axes2,'on')
-plot(handles.axes2, x, y2)
-hold(handles.axes3,'on')
-plot(handles.axes3, x, y3)
+vmax = 13;
+[x, y1, y2, y3] = createProfile(pmax, vmax, amax);
+list = [];
+for i = 1:100
+    list = [list, y3(30*i)];
+end
+list = list / pmax;
+hold(handles.axes1,'on');
+plot(handles.axes1, x, y1);
+hold(handles.axes2,'on');
+plot(handles.axes2, x, y2);
+hold(handles.axes3,'on');
+plot(handles.axes3, x, y3);
+EEffectorXPoints = [];
+EEffectorYPoints = [];
+EEffectorZPoints = [];
+pitchPoints = [];
+for i = 1:100
+    EEffectorXPoints = [EEffectorXPoints, EEffectorX1 + (EEffectorX2 - EEffectorX1) * list(i)];
+    EEffectorYPoints = [EEffectorYPoints, EEffectorY1 + (EEffectorY2 - EEffectorY1) * list(i)];
+    EEffectorZPoints = [EEffectorZPoints, EEffectorZ1 + (EEffectorZ2 - EEffectorZ1) * list(i)];
+    pitchPoints = [pitchPoints, pitch1 + (pitch2 - pitch1) * list(i)];
+end
+% EEffectorXPoints = linspace(EEffectorX1, EEffectorX2, 100);
+% EEffectorYPoints = linspace(EEffectorY1, EEffectorY2, 100);
+% EEffectorZPoints = linspace(EEffectorZ1, EEffectorZ2, 100);
+% pitchPoints = linspace(pitch1, pitch2, 100)
+for i = 1:100
+    calculateInverseKinematicsPath(hObject, eventdata, handles, EEffectorXPoints(i), EEffectorYPoints(i), EEffectorZPoints(i), pitchPoints(i));
+    pause(0.0001);
+end
+
+

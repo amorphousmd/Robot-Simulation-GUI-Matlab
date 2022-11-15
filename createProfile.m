@@ -1,7 +1,6 @@
 function [xall,yall,Yall,Zall] = createProfile(pmax, vmax, amax)
 if vmax * vmax > amax * pmax
-    disp('too big')
-    vmaxnew = sqrt(amax * pmax)
+    vmaxnew = sqrt(amax * pmax);
     vmax = vmaxnew;
 end
 t1 = vmax / amax;
@@ -23,19 +22,19 @@ y3 = amax * linspace(-1,-1,1000);
 % integral
 Y3 = cumtrapz(x3,y3) + vmax;
 % plot
-% figure, hold on
+% figure, hold on;
 
 xbuf = cat(2,x1,x2);
-xall = cat(2, xbuf,x3)
+xall = cat(2, xbuf,x3);
 ybuf = cat(2,y1,y2);
-yall = cat(2, ybuf,y3)
+yall = cat(2, ybuf,y3);
 Ybuf = cat(2,Y1,Y2);
-Yall = cat(2, Ybuf,Y3)
+Yall = cat(2, Ybuf,Y3);
 Z1 = cumtrapz(x1,Y1);
 Z2 = cumtrapz(x2,Y2) + t1 * vmax/2;
 Z3 = cumtrapz(x3,Y3) + t1 * vmax/2 + tm * vmax;
 Zbuf = cat(2,Z1,Z2);
-Zall = cat(2, Zbuf,Z3)
+Zall = cat(2, Zbuf,Z3);
 
 
 % plot(xall,yall);
