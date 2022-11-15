@@ -22,7 +22,7 @@ function varargout = untitled(varargin)
 
 % Edit the above text to modify the response to help untitled
 
-% Last Modified by GUIDE v2.5 12-Nov-2022 01:39:24
+% Last Modified by GUIDE v2.5 15-Nov-2022 23:39:50
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -54,6 +54,15 @@ function untitled_OpeningFcn(hObject, eventdata, handles, varargin)
 
 % Choose default command line output for untitled
 handles.output = hObject;
+
+% Initialise tabs
+handles.tabManager = TabManager( hObject );
+
+% Set-up a selection changed function on the create tab groups
+tabGroups = handles.tabManager.TabGroups;
+for tgi=1:length(tabGroups)
+    set(tabGroups(tgi),'SelectionChangedFcn',@tabChangedCB)
+end
 
 % Update handles structure
 guidata(hObject, handles);
@@ -1317,8 +1326,8 @@ EEffectorY2 = handles.interpolateVars.EEffectorY;
 EEffectorZ2 = handles.interpolateVars.EEffectorZ;
 pitch2 = handles.interpolateVars.EEffectorPitch;
 pmax = sqrt((EEffectorX2 - EEffectorX1)^2 + (EEffectorY2 - EEffectorY1)^2 + (EEffectorZ2 - EEffectorZ1)^2)
-amax = 10;
-vmax = 13;
+amax = handles.interpolateVars.Amax;
+vmax = handles.interpolateVars.Vmax;
 [x, y1, y2, y3] = createProfile(pmax, vmax, amax);
 list = [];
 for i = 1:100
@@ -1351,3 +1360,65 @@ for i = 1:100
 end
 
 
+
+function editVMax_Callback(hObject, eventdata, handles)
+% hObject    handle to editVMax (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: get(hObject,'String') returns contents of editVMax as text
+%        str2double(get(hObject,'String')) returns contents of editVMax as a double
+Vmax = str2double(get(hObject, 'String'));
+if isnan(Vmax)
+    set(hObject, 'String', 0);
+    errordlg('Input must be a number','Error');
+end
+
+% Save the new volume value
+handles.interpolateVars.Vmax = Vmax;
+guidata(hObject,handles)
+
+
+% --- Executes during object creation, after setting all properties.
+function editVMax_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to editVMax (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: edit controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+
+
+function editAMax_Callback(hObject, eventdata, handles)
+% hObject    handle to editAMax (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: get(hObject,'String') returns contents of editAMax as text
+%        str2double(get(hObject,'String')) returns contents of editAMax as a double
+Amax = str2double(get(hObject, 'String'));
+if isnan(Amax)
+    set(hObject, 'String', 0);
+    errordlg('Input must be a number','Error');
+end
+
+% Save the new volume value
+handles.interpolateVars.Amax = Amax;
+guidata(hObject,handles)
+
+
+% --- Executes during object creation, after setting all properties.
+function editAMax_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to editAMax (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: edit controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
