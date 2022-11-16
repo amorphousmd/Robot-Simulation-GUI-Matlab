@@ -1331,7 +1331,7 @@ vmax = handles.interpolateVars.Vmax;
 [x, y1, y2, y3] = createProfile(pmax, vmax, amax);
 list = [];
 for i = 1:100
-    list = [list, y3(30*i)];
+    list = [list, y3(30*i)]
 end
 list = list / pmax;
 hold(handles.axes1,'on');

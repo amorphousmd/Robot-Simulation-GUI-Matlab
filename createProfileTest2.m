@@ -1,4 +1,6 @@
-function [xall,yall,Yall,Zall] = createProfile(pmax, vmax, amax)
+pmax = 721;
+vmax = 33333;
+amax = 360;
 if vmax * vmax > amax * pmax
     vmaxnew = sqrt(amax * pmax);
     vmax = vmaxnew;
@@ -28,7 +30,7 @@ y3 = amax * linspace(-1,-1,length(x3));
 % integral
 Y3 = cumtrapz(x3,y3) + vmax;
 % plot
-% figure, hold on;
+figure, hold on;
 
 xbuf = cat(2,x1,x2);
 xall = cat(2, xbuf,x3);
@@ -48,8 +50,11 @@ Zbuf = cat(2,Z1,Z2);
 Zall = cat(2, Zbuf,Z3);
 
 
-% plot(xall,yall);
-% plot(xall,Yall);
-% plot(xall,Zall);
-% legend('a', 'v', 'p')
-end
+plot(xall,yall);
+plot(xall,Yall);
+plot(xall,Zall);
+legend('a', 'v', 'p')
+% list = [];
+% for i = 1:100
+%     list = [list, Zall(30*i)]
+% end
