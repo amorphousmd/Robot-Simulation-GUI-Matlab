@@ -707,7 +707,7 @@ offsetAngle = 10.6197;
 % EEffectorZ = handles.inverseAngles.EEffectorZ
 % pitch = handles.inverseAngles.EEffectorPitch
 
-theta1 = atan2(EEffectorY, EEffectorX) * 180 / pi;
+theta1 = atan2(EEffectorY, EEffectorX) * 180 / pi
 
 Y = EEffectorZ - 7.7;
 X = sqrt(EEffectorX * EEffectorX + EEffectorY * EEffectorY) ;
@@ -1374,23 +1374,9 @@ for i = 1:100
     plot(handles.axesTheta3, iPoints, theta3Points, 'b');
     hold(handles.axesTheta4,'on');
     plot(handles.axesTheta4, iPoints, theta4Points, 'b');
-    
-    if i > 2
-        hold(handles.axesTheta1Dot,'on');    
-        dy=diff(theta1Points)./diff(iPoints);
-        plot(handles.axesTheta1Dot, iPoints(2:end),dy, 'b');
-        hold(handles.axesTheta2Dot,'on');    
-        dy=diff(theta2Points)./diff(iPoints);
-        plot(handles.axesTheta2Dot, iPoints(2:end),dy, 'b');
-        hold(handles.axesTheta3Dot,'on');    
-        dy=diff(theta3Points)./diff(iPoints);
-        plot(handles.axesTheta3Dot, iPoints(2:end),dy, 'b');
-        hold(handles.axesTheta4Dot,'on');    
-        dy=diff(theta4Points)./diff(iPoints);
-        plot(handles.axesTheta4Dot, iPoints(2:end),dy, 'b');
-    end
+    dy=diff(y)./diff(x)
+    plot(x(2:end),dy)
     pause(0.0001);
-
 end
 
 
