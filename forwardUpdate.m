@@ -38,6 +38,7 @@ for d = 1
     global prevY24;
     global prevZ14;
     global prevZ24;
+    global h;
     delete(prevS1);
     delete(prevS2);
     delete(prevS3);
@@ -75,6 +76,7 @@ for d = 1
     delete(prevY24);
     delete(prevZ14);
     delete(prevZ24);
+    delete(h);
 end
 
 % Calculating the homogenous matrices
@@ -263,6 +265,14 @@ for d = 1
     end
 end
 
+global drawWorkspaceAllow;
+if drawWorkspaceAllow == 1
+[x y z] = sphere(128);
+h = surfl(x * 38, y * 38, z * 38 + 7.7); 
+set(h, 'FaceAlpha', 0.3)
+shading interp
+end
+
 ry_angle = 90*pi/180; 
 Ry = makehgtform('yrotate',ry_angle);
 
@@ -327,6 +337,7 @@ global drawPathAllow;
 if drawPathAllow == 1
 plot3(endEffectorX, endEffectorY, endEffectorZ, 'o','Color','b','MarkerSize',2,'MarkerFaceColor','b')
 end
+
 end
 
 

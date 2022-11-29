@@ -22,7 +22,7 @@ function varargout = untitled(varargin)
 
 % Edit the above text to modify the response to help untitled
 
-% Last Modified by GUIDE v2.5 15-Nov-2022 23:39:50
+% Last Modified by GUIDE v2.5 29-Nov-2022 23:53:22
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -396,8 +396,10 @@ global prevZ14;
 global prevZ24;
 global drawCoordsAllow;
 global drawPathAllow;
+global drawWorkspaceAllow;
 drawCoordsAllow = 0;
 drawPathAllow = 0;
+drawWorkspaceAllow = 0;
 global theta1Old;
 global theta2Old;
 global theta3Old;
@@ -1448,6 +1450,238 @@ guidata(hObject,handles)
 % --- Executes during object creation, after setting all properties.
 function editAMax_CreateFcn(hObject, eventdata, handles)
 % hObject    handle to editAMax (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: edit controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+
+% --- Executes on button press in checkbox3.
+function checkbox3_Callback(hObject, eventdata, handles)
+% hObject    handle to checkbox3 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hint: get(hObject,'Value') returns toggle state of checkbox3
+
+
+
+function editWorkspaceTheta2Min_Callback(hObject, eventdata, handles)
+% hObject    handle to editWorkspaceTheta2Min (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: get(hObject,'String') returns contents of editWorkspaceTheta2Min as text
+%        str2double(get(hObject,'String')) returns contents of editWorkspaceTheta2Min as a double
+WspTheta2Min = str2double(get(hObject, 'String'));
+if isnan(WspTheta2Min)
+    set(hObject, 'String', 0);
+    errordlg('Input must be a number','Error');
+end
+
+% Save the new volume value
+handles.Workspace.WspTheta2Min = WspTheta2Min;
+guidata(hObject,handles)
+
+
+% --- Executes during object creation, after setting all properties.
+function editWorkspaceTheta2Min_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to editWorkspaceTheta2Min (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: edit controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+
+
+function editWorkspaceTheta3Min_Callback(hObject, eventdata, handles)
+% hObject    handle to editWorkspaceTheta3Min (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: get(hObject,'String') returns contents of editWorkspaceTheta3Min as text
+%        str2double(get(hObject,'String')) returns contents of editWorkspaceTheta3Min as a double
+WspTheta3Min = str2double(get(hObject, 'String'));
+if isnan(WspTheta3Min)
+    set(hObject, 'String', 0);
+    errordlg('Input must be a number','Error');
+end
+
+% Save the new volume value
+handles.Workspace.WspTheta3Min = WspTheta3Min;
+guidata(hObject,handles)
+
+
+% --- Executes during object creation, after setting all properties.
+function editWorkspaceTheta3Min_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to editWorkspaceTheta3Min (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: edit controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+
+
+function editWorkspaceTheta4Min_Callback(hObject, eventdata, handles)
+% hObject    handle to editWorkspaceTheta4Min (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: get(hObject,'String') returns contents of editWorkspaceTheta4Min as text
+%        str2double(get(hObject,'String')) returns contents of editWorkspaceTheta4Min as a double
+WspTheta4Min = str2double(get(hObject, 'String'));
+if isnan(WspTheta4Min)
+    set(hObject, 'String', 0);
+    errordlg('Input must be a number','Error');
+end
+
+% Save the new volume value
+handles.Workspace.WspTheta4Min = WspTheta4Min;
+guidata(hObject,handles)
+
+
+% --- Executes during object creation, after setting all properties.
+function editWorkspaceTheta4Min_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to editWorkspaceTheta4Min (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: edit controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+
+% --- Executes on button press in pushbutton6.
+function pushbutton6_Callback(hObject, eventdata, handles)
+% hObject    handle to pushbutton6 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+hold(handles.axesWorkspace,'off');
+theta2Min = handles.Workspace.WspTheta2Min;
+theta3Min = handles.Workspace.WspTheta3Min;
+theta4Min = handles.Workspace.WspTheta4Min;
+theta2Max = handles.Workspace.WspTheta2Max;
+theta3Max = handles.Workspace.WspTheta3Max;
+theta4Max = handles.Workspace.WspTheta4Max;
+[x, y] = plotWorkspace2D(theta2Min, theta3Min, theta4Min, theta2Max, theta3Max, theta4Max);
+plot(handles.axesWorkspace, x, y, 'g','LineWidth',2);
+hold(handles.axesWorkspace,'on');
+
+
+
+% --- Executes on button press in checkbox4.
+function checkbox4_Callback(hObject, eventdata, handles)
+% hObject    handle to checkbox4 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+state = get(hObject,'Value')
+global drawWorkspaceAllow;
+drawWorkspaceAllow = state;
+
+% Hint: get(hObject,'Value') returns toggle state of checkbox4
+
+
+
+function editWorkspaceTheta2Max_Callback(hObject, eventdata, handles)
+% hObject    handle to editWorkspaceTheta2Max (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: get(hObject,'String') returns contents of editWorkspaceTheta2Max as text
+%        str2double(get(hObject,'String')) returns contents of editWorkspaceTheta2Max as a double
+WspTheta2Max = str2double(get(hObject, 'String'));
+if isnan(WspTheta2Max)
+    set(hObject, 'String', 0);
+    errordlg('Input must be a number','Error');
+end
+
+% Save the new volume value
+handles.Workspace.WspTheta2Max = WspTheta2Max;
+guidata(hObject,handles)
+
+
+% --- Executes during object creation, after setting all properties.
+function editWorkspaceTheta2Max_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to editWorkspaceTheta2Max (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: edit controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+
+
+function editWorkspaceTheta3Max_Callback(hObject, eventdata, handles)
+% hObject    handle to editWorkspaceTheta3Max (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: get(hObject,'String') returns contents of editWorkspaceTheta3Max as text
+%        str2double(get(hObject,'String')) returns contents of editWorkspaceTheta3Max as a double
+WspTheta3Max = str2double(get(hObject, 'String'));
+if isnan(WspTheta3Max)
+    set(hObject, 'String', 0);
+    errordlg('Input must be a number','Error');
+end
+
+% Save the new volume value
+handles.Workspace.WspTheta3Max = WspTheta3Max;
+guidata(hObject,handles)
+
+
+% --- Executes during object creation, after setting all properties.
+function editWorkspaceTheta3Max_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to editWorkspaceTheta3Max (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: edit controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+
+
+function editWorkspaceTheta4Max_Callback(hObject, eventdata, handles)
+% hObject    handle to editWorkspaceTheta4Max (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: get(hObject,'String') returns contents of editWorkspaceTheta4Max as text
+%        str2double(get(hObject,'String')) returns contents of editWorkspaceTheta4Max as a double
+WspTheta4Max = str2double(get(hObject, 'String'));
+if isnan(WspTheta4Max)
+    set(hObject, 'String', 0);
+    errordlg('Input must be a number','Error');
+end
+
+% Save the new volume value
+handles.Workspace.WspTheta4Max = WspTheta4Max;
+guidata(hObject,handles)
+
+
+
+% --- Executes during object creation, after setting all properties.
+function editWorkspaceTheta4Max_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to editWorkspaceTheta4Max (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    empty - handles not created until after all CreateFcns called
 
