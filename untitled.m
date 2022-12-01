@@ -1319,6 +1319,17 @@ function btnInterPolate_Callback(hObject, eventdata, handles)
 % hObject    handle to btnInterPolate (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
+cla(handles.axes1)
+cla(handles.axes2)
+cla(handles.axes3)
+cla(handles.axesTheta1)
+cla(handles.axesTheta2)
+cla(handles.axesTheta3)
+cla(handles.axesTheta4)
+cla(handles.axesTheta1Dot)
+cla(handles.axesTheta2Dot)
+cla(handles.axesTheta3Dot)
+cla(handles.axesTheta4Dot)
 EEffectorX1 = handles.inverseAngles.EEffectorX;
 EEffectorY1 = handles.inverseAngles.EEffectorY;
 EEffectorZ1 = handles.inverseAngles.EEffectorZ;
@@ -1332,9 +1343,10 @@ amax = handles.interpolateVars.Amax;
 vmax = handles.interpolateVars.Vmax;
 [x, y1, y2, y3] = createProfile(pmax, vmax, amax);
 list = [];
-for i = 1:100
+for i = 1:floor(length(y3) / 30)
     list = [list, y3(30*i)]
 end
+% Taking the percentage of the path
 list = list / pmax;
 hold(handles.axes1,'on');
 plot(handles.axes1, x, y1);
@@ -1351,7 +1363,7 @@ theta2Points = [];
 theta3Points = [];
 theta4Points = [];
 iPoints = [];
-for i = 1:100
+for i = 1:floor(length(y3) / 30)
     EEffectorXPoints = [EEffectorXPoints, EEffectorX1 + (EEffectorX2 - EEffectorX1) * list(i)];
     EEffectorYPoints = [EEffectorYPoints, EEffectorY1 + (EEffectorY2 - EEffectorY1) * list(i)];
     EEffectorZPoints = [EEffectorZPoints, EEffectorZ1 + (EEffectorZ2 - EEffectorZ1) * list(i)];
@@ -1361,7 +1373,7 @@ end
 % EEffectorYPoints = linspace(EEffectorY1, EEffectorY2, 100);
 % EEffectorZPoints = linspace(EEffectorZ1, EEffectorZ2, 100);
 % pitchPoints = linspace(pitch1, pitch2, 100)
-for i = 1:100
+for i = 1:floor(length(y3) / 30)
     [theta1, theta2, theta3, theta4] = calculateInverseKinematicsPath(hObject, eventdata, handles, EEffectorXPoints(i), EEffectorYPoints(i), EEffectorZPoints(i), pitchPoints(i));
     theta1Points = [theta1Points, theta1];
     theta2Points = [theta2Points, theta2];
@@ -1394,6 +1406,19 @@ for i = 1:100
     pause(0.0001);
 
 end
+handles.inverseAngles.EEffectorX = EEffectorX2;
+handles.inverseAngles.EEffectorY = EEffectorY2;
+handles.inverseAngles.EEffectorZ = EEffectorZ2;
+handles.inverseAngles.EEffectorPitch = pitch2;
+set(handles.editInverseX,'String',num2str(EEffectorX2));
+set(handles.editInverseY,'String',num2str(EEffectorY2));
+set(handles.editInverseZ,'String',num2str(EEffectorZ2));
+set(handles.editInversePitch,'String',num2str(pitch2));
+set(handles.sliderInverseX, 'Value', EEffectorX2);
+set(handles.sliderInverseX, 'Value', EEffectorY2);
+set(handles.sliderInverseX, 'Value', EEffectorZ2);
+set(handles.sliderInverseX, 'Value', pitch2);
+guidata(hObject,handles)
 
 
 
