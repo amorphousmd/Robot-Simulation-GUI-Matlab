@@ -22,7 +22,7 @@ function varargout = untitled(varargin)
 
 % Edit the above text to modify the response to help untitled
 
-% Last Modified by GUIDE v2.5 29-Nov-2022 23:53:22
+% Last Modified by GUIDE v2.5 01-Dec-2022 22:19:09
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -670,25 +670,39 @@ set(handles.editEndEffectorPitch, 'String', num2str(endEffectorPitch / pi * 180)
 set(handles.editEndEffectorYaw, 'String', num2str(endEffectorYaw / pi * 180));
 
 function calculateInverseKinematics(hObject, eventdata, handles)
-offsetAngle = 10.6197;
-EEffectorX = handles.inverseAngles.EEffectorX;
-EEffectorY = handles.inverseAngles.EEffectorY;
-EEffectorZ = handles.inverseAngles.EEffectorZ;
+% offsetAngle = 10.6197;
+% EEffectorX = handles.inverseAngles.EEffectorX;
+% EEffectorY = handles.inverseAngles.EEffectorY;
+% EEffectorZ = handles.inverseAngles.EEffectorZ;
+% pitch = handles.inverseAngles.EEffectorPitch;
+% 
+% theta1 = atan2(EEffectorY, EEffectorX) * 180 / pi;
+% 
+% Y = EEffectorZ - 7.7;
+% X = sqrt(EEffectorX * EEffectorX + EEffectorY * EEffectorY) ;
+% beta = -pitch;
+% % beta = pitch;
+% P2x = X - 12.6 * cos(beta * pi / 180);
+% P2y = Y - 12.6 * sin(beta * pi / 180);
+% theta3 = acos((P2x*P2x + P2y*P2y - 13.0231*13.0231 - 12.4*12.4) / (2 * 13.0231 * 12.4)) * 180 / pi ;
+% theta2 = (atan(P2y/ P2x) - atan2( (12.4 * sin(theta3 * pi / 180)) , (13.0231 + 12.4 * cos(theta3 * pi / 180))))* 180 / pi + 10.6197;
+% theta4 = beta - theta3 - theta2;
+% theta3 = theta3 - 10.6197;
+% theta4 = theta4 + 10.6197;
+x = handles.inverseAngles.EEffectorX * 10;
+y = handles.inverseAngles.EEffectorY * 10;
+z = handles.inverseAngles.EEffectorZ * 10;
 pitch = handles.inverseAngles.EEffectorPitch;
-
-theta1 = atan2(EEffectorY, EEffectorX) * 180 / pi;
-
-Y = EEffectorZ - 7.7;
-X = sqrt(EEffectorX * EEffectorX + EEffectorY * EEffectorY) ;
-beta = -pitch;
-% beta = pitch;
-P2x = X - 12.6 * cos(beta * pi / 180);
-P2y = Y - 12.6 * sin(beta * pi / 180);
-theta3 = acos((P2x*P2x + P2y*P2y - 13.0231*13.0231 - 12.4*12.4) / (2 * 13.0231 * 12.4)) * 180 / pi ;
-theta2 = (atan(P2y/ P2x) - atan2( (12.4 * sin(theta3 * pi / 180)) , (13.0231 + 12.4 * cos(theta3 * pi / 180))))* 180 / pi + 10.6197;
-theta4 = beta - theta3 - theta2;
-theta3 = theta3 - 10.6197;
-theta4 = theta4 + 10.6197;
+yaw = atan2(y, x) * 180 / pi;
+theta1o = handles.jointAngles.theta1;
+theta2o = handles.jointAngles.theta2;
+theta3o = handles.jointAngles.theta3;
+theta4o = handles.jointAngles.theta4;
+[theta1c, theta2c, theta3c, theta4c] = inversekinematic(x,z,pitch,yaw, theta1o, theta2o, theta3o, theta4o);
+theta1 = double(wrapAngle(theta1c)); 
+theta2 = double(wrapAngle(theta2c)) + 90;
+theta3 = double(wrapAngle(theta3c)) - 90;
+theta4 = double(wrapAngle(theta4c)); 
 set(handles.editTheta1,'String',num2str(theta1));
 set(handles.editTheta2,'String',num2str(theta2));
 set(handles.editTheta3,'String',num2str(theta3));
@@ -697,31 +711,51 @@ set(handles.sliderTheta1,'value',theta1);
 set(handles.sliderTheta2,'value',theta2);
 set(handles.sliderTheta3,'value',theta3);
 set(handles.sliderTheta4,'value',theta4);
+handles.jointAngles.theta1 = theta1;
+handles.jointAngles.theta2 = theta2;
+handles.jointAngles.theta3 = theta3;
+handles.jointAngles.theta4 = theta4;
 guidata(hObject,handles)
 
 forwardUpdate(theta1, theta2, theta3, theta4);
 updateEndEffector(hObject, eventdata, handles);
 
 function [theta1, theta2, theta3, theta4] = calculateInverseKinematicsPath(hObject, eventdata, handles, EEffectorX, EEffectorY, EEffectorZ, pitch)
-offsetAngle = 10.6197;
+% offsetAngle = 10.6197;
 % EEffectorX = handles.inverseAngles.EEffectorX
 % EEffectorY = handles.inverseAngles.EEffectorY
 % EEffectorZ = handles.inverseAngles.EEffectorZ
 % pitch = handles.inverseAngles.EEffectorPitch
+% 
+% theta1 = atan2(EEffectorY, EEffectorX) * 180 / pi;
+% 
+% Y = EEffectorZ - 7.7;
+% X = sqrt(EEffectorX * EEffectorX + EEffectorY * EEffectorY) ;
+% beta = -pitch;
+% % beta = pitch;
+% P2x = X - 12.6 * cos(beta * pi / 180);
+% P2y = Y - 12.6 * sin(beta * pi / 180);
+% theta3 = acos((P2x*P2x + P2y*P2y - 13.0231*13.0231 - 12.4*12.4) / (2 * 13.0231 * 12.4)) * 180 / pi ;
+% theta2 = (atan(P2y/ P2x) - atan2( (12.4 * sin(theta3 * pi / 180)) , (13.0231 + 12.4 * cos(theta3 * pi / 180))))* 180 / pi + 10.6197;
+% theta4 = beta - theta3 - theta2;
+% theta3 = theta3 - 10.6197;
+% theta4 = theta4 + 10.6197;
 
-theta1 = atan2(EEffectorY, EEffectorX) * 180 / pi;
+x = EEffectorX * 10;
+y = EEffectorY * 10;
+z = EEffectorZ * 10;
+pitch = pitch;
+yaw = atan2(y, x) * 180 / pi;
+theta1o = handles.jointAngles.theta1;
+theta2o = handles.jointAngles.theta2;
+theta3o = handles.jointAngles.theta3;
+theta4o = handles.jointAngles.theta4;
+[theta1c, theta2c, theta3c, theta4c] = inversekinematic(x,z,pitch,yaw, theta1o, theta2o, theta3o, theta4o);
+theta1 = double(wrapAngle(theta1c)) ;
+theta2 = double(wrapAngle(theta2c)) + 90;
+theta3 = double(wrapAngle(theta3c)) - 90;
+theta4 = double(wrapAngle(theta4c)) ;
 
-Y = EEffectorZ - 7.7;
-X = sqrt(EEffectorX * EEffectorX + EEffectorY * EEffectorY) ;
-beta = -pitch;
-% beta = pitch;
-P2x = X - 12.6 * cos(beta * pi / 180);
-P2y = Y - 12.6 * sin(beta * pi / 180);
-theta3 = acos((P2x*P2x + P2y*P2y - 13.0231*13.0231 - 12.4*12.4) / (2 * 13.0231 * 12.4)) * 180 / pi ;
-theta2 = (atan(P2y/ P2x) - atan2( (12.4 * sin(theta3 * pi / 180)) , (13.0231 + 12.4 * cos(theta3 * pi / 180))))* 180 / pi + 10.6197;
-theta4 = beta - theta3 - theta2;
-theta3 = theta3 - 10.6197;
-theta4 = theta4 + 10.6197;
 set(handles.editTheta1,'String',num2str(theta1));
 set(handles.editTheta2,'String',num2str(theta2));
 set(handles.editTheta3,'String',num2str(theta3));
@@ -1011,35 +1045,48 @@ function btnCalculateInverseKinematics_Callback(hObject, eventdata, handles)
 % hObject    handle to btnCalculateInverseKinematics (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
-offsetAngle = 10.6197;
-EEffectorX = handles.inverseAngles.EEffectorX;
-EEffectorY = handles.inverseAngles.EEffectorY;
-EEffectorZ = handles.inverseAngles.EEffectorZ;
-pitch = handles.inverseAngles.EEffectorPitch;
-
-theta1 = atan2(EEffectorY, EEffectorX) * 180 / pi;
-
-Y = EEffectorZ - 7.7;
-X = sqrt(EEffectorX * EEffectorX + EEffectorY * EEffectorY) ;
-beta = -pitch;
-% beta = pitch;
-P2x = X - 12.6 * cos(beta * pi / 180);
-P2y = Y - 12.6 * sin(beta * pi / 180);
-theta3 = acos((P2x*P2x + P2y*P2y - 13.0231*13.0231 - 12.4*12.4) / (2 * 13.0231 * 12.4)) * 180 / pi ;
-theta2 = (atan(P2y/ P2x) - atan2( (12.4 * sin(theta3 * pi / 180)) , (13.0231 + 12.4 * cos(theta3 * pi / 180))))* 180 / pi + 10.6197;
-theta4 = beta - theta3 - theta2;
-theta3 = theta3 - 10.6197;
-theta4 = theta4 + 10.6197;
-set(handles.editTheta1,'String',num2str(theta1));
-set(handles.editTheta2,'String',num2str(theta2));
-set(handles.editTheta3,'String',num2str(theta3));
-set(handles.editTheta4,'String',num2str(theta4));
-set(handles.sliderTheta1,'value',theta1);
-set(handles.sliderTheta2,'value',theta2);
-set(handles.sliderTheta3,'value',theta3);
-set(handles.sliderTheta4,'value',theta4);
-guidata(hObject,handles)
-
+% offsetAngle = 10.6197;
+% EEffectorX = handles.inverseAngles.EEffectorX;
+% EEffectorY = handles.inverseAngles.EEffectorY;
+% EEffectorZ = handles.inverseAngles.EEffectorZ;
+% pitch = handles.inverseAngles.EEffectorPitch;
+% 
+% theta1 = atan2(EEffectorY, EEffectorX) * 180 / pi;
+% 
+% Y = EEffectorZ - 7.7;
+% X = sqrt(EEffectorX * EEffectorX + EEffectorY * EEffectorY) ;
+% beta = -pitch;
+% % beta = pitch;
+% P2x = X - 12.6 * cos(beta * pi / 180);
+% P2y = Y - 12.6 * sin(beta * pi / 180);
+% theta3 = acos((P2x*P2x + P2y*P2y - 13.0231*13.0231 - 12.4*12.4) / (2 * 13.0231 * 12.4)) * 180 / pi ;
+% theta2 = (atan(P2y/ P2x) - atan2( (12.4 * sin(theta3 * pi / 180)) , (13.0231 + 12.4 * cos(theta3 * pi / 180))))* 180 / pi + 10.6197;
+% theta4 = beta - theta3 - theta2;
+% theta3 = theta3 - 10.6197;
+% theta4 = theta4 + 10.6197;
+% set(handles.editTheta1,'String',num2str(theta1));
+% set(handles.editTheta2,'String',num2str(theta2));
+% set(handles.editTheta3,'String',num2str(theta3));
+% set(handles.editTheta4,'String',num2str(theta4));
+% set(handles.sliderTheta1,'value',theta1);
+% set(handles.sliderTheta2,'value',theta2);
+% set(handles.sliderTheta3,'value',theta3);
+% set(handles.sliderTheta4,'value',theta4);
+% guidata(hObject,handles)
+x = handles.inverseAngles.EEffectorX * 10
+y = handles.inverseAngles.EEffectorY * 10
+z = handles.inverseAngles.EEffectorZ * 10
+pitch = handles.inverseAngles.EEffectorPitch
+yaw = atan2(y, x) * 180 / pi
+theta1o = handles.jointAngles.theta1
+theta2o = handles.jointAngles.theta2
+theta3o = handles.jointAngles.theta3
+theta4o = handles.jointAngles.theta4
+[theta1c, theta2c, theta3c, theta4c] = inversekinematic(x,z,pitch,yaw, theta1o, theta2o, theta3o, theta4o)
+theta1 = double(wrapAngle(theta1c)) 
+theta2 = double(wrapAngle(theta2c)) + 90
+theta3 = double(wrapAngle(theta3c)) - 90
+theta4 = double(wrapAngle(theta4c)) 
 forwardUpdate(theta1, theta2, theta3, theta4);
 updateEndEffector(hObject, eventdata, handles);
 
@@ -1343,8 +1390,8 @@ amax = handles.interpolateVars.Amax;
 vmax = handles.interpolateVars.Vmax;
 [x, y1, y2, y3] = createProfile(pmax, vmax, amax);
 list = [];
-for i = 1:floor(length(y3) / 30)
-    list = [list, y3(30*i)]
+for i = 1:floor(length(y3) / 1200)
+    list = [list, y3(1200*i)];
 end
 % Taking the percentage of the path
 list = list / pmax;
@@ -1363,7 +1410,7 @@ theta2Points = [];
 theta3Points = [];
 theta4Points = [];
 iPoints = [];
-for i = 1:floor(length(y3) / 30)
+for i = 1:floor(length(y3) / 1200)
     EEffectorXPoints = [EEffectorXPoints, EEffectorX1 + (EEffectorX2 - EEffectorX1) * list(i)];
     EEffectorYPoints = [EEffectorYPoints, EEffectorY1 + (EEffectorY2 - EEffectorY1) * list(i)];
     EEffectorZPoints = [EEffectorZPoints, EEffectorZ1 + (EEffectorZ2 - EEffectorZ1) * list(i)];
@@ -1373,7 +1420,7 @@ end
 % EEffectorYPoints = linspace(EEffectorY1, EEffectorY2, 100);
 % EEffectorZPoints = linspace(EEffectorZ1, EEffectorZ2, 100);
 % pitchPoints = linspace(pitch1, pitch2, 100)
-for i = 1:floor(length(y3) / 30)
+for i = 1:floor(length(y3) / 1200)
     [theta1, theta2, theta3, theta4] = calculateInverseKinematicsPath(hObject, eventdata, handles, EEffectorXPoints(i), EEffectorYPoints(i), EEffectorZPoints(i), pitchPoints(i));
     theta1Points = [theta1Points, theta1];
     theta2Points = [theta2Points, theta2];
@@ -1715,3 +1762,131 @@ function editWorkspaceTheta4Max_CreateFcn(hObject, eventdata, handles)
 if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
     set(hObject,'BackgroundColor','white');
 end
+
+
+% --- Executes on button press in btnPseudoInverse.
+function btnPseudoInverse_Callback(hObject, eventdata, handles)
+% hObject    handle to btnPseudoInverse (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+cla(handles.axes1)
+cla(handles.axes2)
+cla(handles.axes3)
+cla(handles.axesTheta1)
+cla(handles.axesTheta2)
+cla(handles.axesTheta3)
+cla(handles.axesTheta4)
+cla(handles.axesTheta1Dot)
+cla(handles.axesTheta2Dot)
+cla(handles.axesTheta3Dot)
+cla(handles.axesTheta4Dot)
+EEffectorX1 = handles.inverseAngles.EEffectorX;
+EEffectorY1 = handles.inverseAngles.EEffectorY;
+EEffectorZ1 = handles.inverseAngles.EEffectorZ;
+pitch1 = handles.inverseAngles.EEffectorPitch;
+EEffectorX2 = handles.interpolateVars.EEffectorX;
+EEffectorY2 = handles.interpolateVars.EEffectorY;
+EEffectorZ2 = handles.interpolateVars.EEffectorZ;
+pitch2 = handles.interpolateVars.EEffectorPitch;
+pmax = sqrt((EEffectorX2 - EEffectorX1)^2 + (EEffectorY2 - EEffectorY1)^2 + (EEffectorZ2 - EEffectorZ1)^2);
+amax = handles.interpolateVars.Amax;
+vmax = handles.interpolateVars.Vmax;
+[x, y1, y2, y3] = createProfile(pmax, vmax, amax);
+list = [];
+for i = 1:floor(length(y3) / 120)
+    list = [list, y3(120*i)];
+end
+% Taking the percentage of the path
+list = list / pmax;
+hold(handles.axes1,'on');
+plot(handles.axes1, x, y1);
+hold(handles.axes2,'on');
+plot(handles.axes2, x, y2);
+hold(handles.axes3,'on');
+plot(handles.axes3, x, y3);
+EEffectorXPoints = [];
+EEffectorYPoints = [];
+EEffectorZPoints = [];
+pitchPoints = [];
+theta1Points = [];
+theta2Points = [];
+theta3Points = [];
+theta4Points = [];
+theta1DotPoints = [];
+theta2DotPoints = [];
+theta3DotPoints = [];
+theta4DotPoints = [];
+iPoints = [];
+for i = 1:floor(length(y3) / 120)
+    EEffectorXPoints = [EEffectorXPoints, EEffectorX1 + (EEffectorX2 - EEffectorX1) * list(i)];
+    EEffectorYPoints = [EEffectorYPoints, EEffectorY1 + (EEffectorY2 - EEffectorY1) * list(i)];
+    EEffectorZPoints = [EEffectorZPoints, EEffectorZ1 + (EEffectorZ2 - EEffectorZ1) * list(i)];
+    pitchPoints = [pitchPoints, pitch1 + (pitch2 - pitch1) * list(i)];
+end
+% EEffectorXPoints = linspace(EEffectorX1, EEffectorX2, 100);
+% EEffectorYPoints = linspace(EEffectorY1, EEffectorY2, 100);
+% EEffectorZPoints = linspace(EEffectorZ1, EEffectorZ2, 100);
+% pitchPoints = linspace(pitch1, pitch2, 100)
+EEffectorXOld = 0;
+EEffectorYOld = 0;
+EEffectorZOld = 0;
+pitchOld = 0;
+dRoll = 0;
+for i = 1:floor(length(y3) / 120)
+    [theta1, theta2, theta3, theta4] = calculateInverseKinematicsPath(hObject, eventdata, handles, EEffectorXPoints(i), EEffectorYPoints(i), EEffectorZPoints(i), pitchPoints(i));
+    theta1Points = [theta1Points, theta1];
+    theta2Points = [theta2Points, theta2];
+    theta3Points = [theta3Points, theta3];
+    theta4Points = [theta4Points, theta4];
+    iPoints = [iPoints, i];
+    hold(handles.axesTheta1,'on');
+    plot(handles.axesTheta1, iPoints, theta1Points, 'b');
+    hold(handles.axesTheta2,'on');
+    plot(handles.axesTheta2, iPoints, theta2Points, 'b');
+    hold(handles.axesTheta3,'on');
+    plot(handles.axesTheta3, iPoints, theta3Points, 'b');
+    hold(handles.axesTheta4,'on');
+    plot(handles.axesTheta4, iPoints, theta4Points, 'b');
+    
+    if i >= 2
+        dX = EEffectorXPoints(i) - EEffectorXPoints(i-1);
+        dY = EEffectorYPoints(i) - EEffectorYPoints(i-1);
+        dZ = EEffectorZPoints(i) - EEffectorZPoints(i-1);
+        dPitch = pitchPoints(i) - pitchPoints(i-1);
+        dYaw = atan2(EEffectorYPoints(i), EEffectorXPoints(i)) * 180 / pi - atan2(EEffectorYPoints(i-1), EEffectorXPoints(i-1)) * 180 / pi;
+        workspaceVector = [dX; dY; dZ; dRoll; dPitch; dYaw];
+        jointspaceVector = inverseJacobian(theta1,theta2,theta3,theta4) * workspaceVector
+        theta1DotPoint = jointspaceVector(1,1)
+        theta2DotPoint = jointspaceVector(2,1)
+        theta3DotPoint = jointspaceVector(3,1)
+        theta4DotPoint = jointspaceVector(4,1)
+        theta1DotPoints = [theta1DotPoints, theta1DotPoint];
+        theta2DotPoints = [theta2DotPoints, theta2DotPoint];
+        theta3DotPoints = [theta3DotPoints, theta3DotPoint];
+        theta4DotPoints = [theta4DotPoints, theta4DotPoint];
+        
+        hold(handles.axesTheta1Dot,'on');    
+        plot(handles.axesTheta1Dot, iPoints(2:end),theta1DotPoints, 'b');
+        hold(handles.axesTheta2Dot,'on');    
+        plot(handles.axesTheta2Dot, iPoints(2:end),theta2DotPoints, 'b');
+        hold(handles.axesTheta3Dot,'on');    
+        plot(handles.axesTheta3Dot, iPoints(2:end),theta3DotPoints, 'b');
+        hold(handles.axesTheta4Dot,'on');    
+        plot(handles.axesTheta4Dot, iPoints(2:end),theta4DotPoints, 'b');
+    end
+    pause(0.0001);
+
+end
+handles.inverseAngles.EEffectorX = EEffectorX2;
+handles.inverseAngles.EEffectorY = EEffectorY2;
+handles.inverseAngles.EEffectorZ = EEffectorZ2;
+handles.inverseAngles.EEffectorPitch = pitch2;
+set(handles.editInverseX,'String',num2str(EEffectorX2));
+set(handles.editInverseY,'String',num2str(EEffectorY2));
+set(handles.editInverseZ,'String',num2str(EEffectorZ2));
+set(handles.editInversePitch,'String',num2str(pitch2));
+set(handles.sliderInverseX, 'Value', EEffectorX2);
+set(handles.sliderInverseX, 'Value', EEffectorY2);
+set(handles.sliderInverseX, 'Value', EEffectorZ2);
+set(handles.sliderInverseX, 'Value', pitch2);
+guidata(hObject,handles)
