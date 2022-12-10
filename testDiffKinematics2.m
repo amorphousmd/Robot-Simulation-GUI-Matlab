@@ -1,21 +1,18 @@
-syms theta1 theta2 theta3 theta4 a1 a2 a3 a4 d1 d2 d3 d4
-z0 = [0;0;1]
-p0 = [0;0;0]
-z1 = [0;0;1]
-z2 = [0;0;1]
-z3 = [0;0;1]
-z4 = [0;0;-1]
-p1 = [a1*cos(theta1); a1 * sin(theta1); d1]
-p2 = [a1*cos(theta1); a2 * cos(theta1+theta2); d1]
-p3 = [a1*cos(theta1); a2 * cos(theta1+theta2); d1 + d3]
-p4 = [a1*cos(theta1); a2 * cos(theta1+theta2); d1 + d3 + d4]
-column1 = cross(z0, (p4 - p0))
-column2 = cross(z1, (p4 - p1))
-column3 = cross(z2, (p4 - p2))
-column4 = cross(z3, (p4 - p3))
-matrixtop = [column1, column2, [0;0;1], column4]
-matrixbot = [z0, z1, [0;0;0], z3]
-matrixfull = cat(1, matrixtop, matrixbot)
-X = transpose(matrixfull) * matrixfull
-M = det(X)
-simplify(M)
+syms theta1 theta2 theta3 theta4
+global T;
+T = forwardkinematic(theta1, theta2, theta3, theta4);
+z0 = [0;0;1];
+z1 = [T(1,3,1); T(2,3,1); T(3,3,1)];
+z2 = [T(1,3,22); T(2,3,22); T(3,3,22)];
+z3 = [T(1,3,3); T(2,3,3); T(3,3,3)];
+
+p0 = [0;0;0];
+p1 = [T(1,4,1); T(2,4,1); T(3,4,1)];
+p2 = [T(1,4,22); T(2,4,22); T(3,4,22)];
+p3 = [T(1,4,3); T(2,4,3); T(3,4,3)];
+p4 = [T(1,4,4); T(2,4,4); T(3,4,4)];
+
+Jq = [cross(z0,(p4-p0)) cross(z1,(p4-p1)) cross(z2,(p4-p2)) cross(z3,(p4-p3));
+       z0 z1 z2 z3];   
+
+L = pinv(Jq);

@@ -32,7 +32,5 @@ column4 = cross(z3, (p4 - p3));
 matrixtop = [column1, column2, column3, column4];
 matrixbot = [z0, z1, z2, z3];
 matrixfull = cat(1, matrixtop, matrixbot);
-X = transpose(matrixfull) * matrixfull;
-M = det(X);
-output = inv(X)*transpose(matrixfull);
+output = pinv(matrixfull)
 end

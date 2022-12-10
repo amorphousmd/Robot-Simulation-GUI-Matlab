@@ -1437,7 +1437,7 @@ end
 % pitchPoints = linspace(pitch1, pitch2, 100)
 for i = 1:floor(length(y3) / 1200)
     [theta1, theta2, theta3, theta4] = calculateInverseKinematicsPath(hObject, eventdata, handles, EEffectorXPoints(i), EEffectorYPoints(i), EEffectorZPoints(i), pitchPoints(i));
-    theta1Points = [theta1Points, theta1];
+    theta1Points = [theta1Points, theta1]
     theta2Points = [theta2Points, theta2];
     theta3Points = [theta3Points, theta3];
     theta4Points = [theta4Points, theta4];
@@ -1453,7 +1453,7 @@ for i = 1:floor(length(y3) / 1200)
     
     if i > 2
         hold(handles.axesTheta1Dot,'on');    
-        dy=diff(theta1Points)./diff(iPoints);
+        dy=diff(theta1Points)./diff(iPoints)
         plot(handles.axesTheta1Dot, iPoints(2:end),dy, 'b');
         hold(handles.axesTheta2Dot,'on');    
         dy=diff(theta2Points)./diff(iPoints);
@@ -1809,9 +1809,9 @@ vmax = handles.interpolateVars.Vmax;
 [x, y1, y2, y3] = createProfile(pmax, vmax, amax);
 list = [];
 listVel = [];
-for i = 1:floor(length(y3) / 120)
-    list = [list, y3(120*i)];
-    listVel = [listVel, y2(120*i)];
+for i = 1:floor(length(y3) / 600)
+    list = [list, y3(600*i)];
+    listVel = [listVel, y2(600*i)];
 end
 % Taking the percentage of the path
 list = list / pmax;
@@ -1839,7 +1839,7 @@ theta2DotPoints = [];
 theta3DotPoints = [];
 theta4DotPoints = [];
 iPoints = [];
-for i = 1:floor(length(y3) / 120)
+for i = 1:floor(length(y3) / 600)
     EEffectorXPoints = [EEffectorXPoints, EEffectorX1 + (EEffectorX2 - EEffectorX1) * list(i)];
     EEffectorYPoints = [EEffectorYPoints, EEffectorY1 + (EEffectorY2 - EEffectorY1) * list(i)];
     EEffectorZPoints = [EEffectorZPoints, EEffectorZ1 + (EEffectorZ2 - EEffectorZ1) * list(i)];
@@ -1854,7 +1854,7 @@ end
 % EEffectorZPoints = linspace(EEffectorZ1, EEffectorZ2, 100);
 % pitchPoints = linspace(pitch1, pitch2, 100)
 dRoll = 0;
-for i = 1:floor(length(y3) / 120)
+for i = 1:floor(length(y3) / 600)
     [theta1, theta2, theta3, theta4] = calculateInverseKinematicsPath(hObject, eventdata, handles, EEffectorXPoints(i), EEffectorYPoints(i), EEffectorZPoints(i), pitchPoints(i))
     theta1Points = [theta1Points, theta1];
     theta2Points = [theta2Points, theta2];
@@ -1871,32 +1871,87 @@ for i = 1:floor(length(y3) / 120)
     plot(handles.axesTheta4, iPoints, theta4Points, 'b');
     
 
-    dX = XVPoints(i);
-    dY = YVPoints(i);
-    dZ = ZVPoints(i);
-    dPitch = pitchVPoints(i);
-    X = EEffectorXPoints(i);
-    Y = EEffectorYPoints(i);
-    dYaw = (dY * X - dX * Y)/(Y * Y + X * X);
-    workspaceVector = [dX; dY; dZ; dRoll; dPitch; dYaw];
-    jointspaceVector = inverseJacobian(theta1,theta2,theta3,theta4) * workspaceVector;
-    theta1DotPoint = jointspaceVector(1,1);
-    theta2DotPoint = jointspaceVector(2,1);
-    theta3DotPoint = jointspaceVector(3,1);
-    theta4DotPoint = jointspaceVector(4,1);
-    theta1DotPoints = [theta1DotPoints, theta1DotPoint];
-    theta2DotPoints = [theta2DotPoints, theta2DotPoint];
-    theta3DotPoints = [theta3DotPoints, theta3DotPoint];
-    theta4DotPoints = [theta4DotPoints, theta4DotPoint];
+    vX = XVPoints(i);
+    vY = YVPoints(i);
+    vZ = ZVPoints(i);
 
-    hold(handles.axesTheta1Dot,'on');    
-    plot(handles.axesTheta1Dot, iPoints,theta1DotPoints, 'b');
-    hold(handles.axesTheta2Dot,'on');    
-    plot(handles.axesTheta2Dot, iPoints,theta2DotPoints, 'b');
-    hold(handles.axesTheta3Dot,'on');    
-    plot(handles.axesTheta3Dot, iPoints,theta3DotPoints, 'b');
-    hold(handles.axesTheta4Dot,'on');    
-    plot(handles.axesTheta4Dot, iPoints,theta4DotPoints, 'b');
+    global T40
+    ExtractedRotationMatrix = T40(1:3,1:3)
+    if i == 1
+        prevmatPos1Point = ExtractedRotationMatrix(1,1);
+        prevmatPos2Point = ExtractedRotationMatrix(1,2);
+        prevmatPos3Point = ExtractedRotationMatrix(1,3);
+        prevmatPos4Point = ExtractedRotationMatrix(2,1);
+        prevmatPos5Point = ExtractedRotationMatrix(2,2);
+        prevmatPos6Point = ExtractedRotationMatrix(2,3);
+        prevmatPos7Point = ExtractedRotationMatrix(3,1);
+        prevmatPos8Point = ExtractedRotationMatrix(3,2);
+        prevmatPos9Point = ExtractedRotationMatrix(3,3);
+    else
+        matPos1Point = ExtractedRotationMatrix(1,1);
+        matPos2Point = ExtractedRotationMatrix(1,2);
+        matPos3Point = ExtractedRotationMatrix(1,3);
+        matPos4Point = ExtractedRotationMatrix(2,1);
+        matPos5Point = ExtractedRotationMatrix(2,2);
+        matPos6Point = ExtractedRotationMatrix(2,3);
+        matPos7Point = ExtractedRotationMatrix(3,1);
+        matPos8Point = ExtractedRotationMatrix(3,2);
+        matPos9Point = ExtractedRotationMatrix(3,3);
+        
+        diffmatPos1Point = matPos1Point - prevmatPos1Point;
+        diffmatPos2Point = matPos2Point - prevmatPos2Point;
+        diffmatPos3Point = matPos3Point - prevmatPos3Point;
+        diffmatPos4Point = matPos4Point - prevmatPos4Point;
+        diffmatPos5Point = matPos5Point - prevmatPos5Point;
+        diffmatPos6Point = matPos6Point - prevmatPos6Point;
+        diffmatPos7Point = matPos7Point - prevmatPos7Point;
+        diffmatPos8Point = matPos8Point - prevmatPos8Point;
+        diffmatPos9Point = matPos9Point - prevmatPos9Point;
+        
+        diffMatrix = [diffmatPos1Point, diffmatPos2Point, diffmatPos3Point;
+                      diffmatPos4Point, diffmatPos5Point, diffmatPos6Point;
+                      diffmatPos7Point, diffmatPos8Point, diffmatPos9Point]
+        SkewMatrix = diffMatrix * transpose(ExtractedRotationMatrix)
+        wX = SkewMatrix(3,2)
+        wY = SkewMatrix(1,3)
+        wZ = SkewMatrix(2,1)
+        
+        workspaceVector = [vX; vY; vZ; wX; wY; wZ]
+        
+        % This is calculated using pseudo inverse
+        jointspaceVector = jacobian(theta1*pi/180,theta2*pi/180,theta3*pi/180,theta4*pi/180) * workspaceVector;
+
+        
+        theta1DotPoint = jointspaceVector(1,1);
+        theta2DotPoint = jointspaceVector(2,1);
+        theta3DotPoint = jointspaceVector(3,1);
+        theta4DotPoint = jointspaceVector(4,1);
+        
+        theta1DotPoints = [theta1DotPoints, theta1DotPoint];
+        theta2DotPoints = [theta2DotPoints, theta2DotPoint];
+        theta3DotPoints = [theta3DotPoints, theta3DotPoint];
+        theta4DotPoints = [theta4DotPoints, theta4DotPoint];
+        
+        prevmatPos1Point = matPos1Point;
+        prevmatPos2Point = matPos2Point;
+        prevmatPos3Point = matPos3Point;
+        prevmatPos4Point = matPos4Point;
+        prevmatPos5Point = matPos5Point;
+        prevmatPos6Point = matPos6Point;
+        prevmatPos7Point = matPos7Point;
+        prevmatPos8Point = matPos8Point;
+        prevmatPos9Point = matPos9Point;
+
+        hold(handles.axesTheta1Dot,'on');    
+        plot(handles.axesTheta1Dot, iPoints(2:end),theta1DotPoints, 'b');
+        hold(handles.axesTheta2Dot,'on');    
+        plot(handles.axesTheta2Dot, iPoints(2:end),theta2DotPoints, 'b');
+        hold(handles.axesTheta3Dot,'on');    
+        plot(handles.axesTheta3Dot, iPoints(2:end),theta3DotPoints, 'b');
+        hold(handles.axesTheta4Dot,'on');    
+        plot(handles.axesTheta4Dot, iPoints(2:end),theta4DotPoints, 'b');
+    end
+    
     pause(0.0001);
 
 end
@@ -2014,7 +2069,8 @@ for i = 1:floor(length(y3) / 600)
     dZ = ZVPoints(i);
     dPitch = pitchVPoints(i);
     workspaceVector = [dX; dY; dZ; dPitch];
-    jointspaceVector = inverseJacobianConcat(theta1,theta2,theta3,theta4) * workspaceVector;
+    jointspaceVector = jacobianAnalytical(theta1*pi/180,theta2*pi/180,theta3*pi/180,theta4*pi/180) * workspaceVector;
+    
     theta1DotPoint = jointspaceVector(1,1);
     theta2DotPoint = jointspaceVector(2,1);
     theta3DotPoint = jointspaceVector(3,1);
@@ -2025,13 +2081,13 @@ for i = 1:floor(length(y3) / 600)
     theta4DotPoints = [theta4DotPoints, theta4DotPoint];
 
     hold(handles.axesTheta1Dot,'on');    
-    plot(handles.axesTheta1Dot, iPoints,XVPoints(1:i), 'b');
+    plot(handles.axesTheta1Dot, iPoints,theta1DotPoints, 'b');
     hold(handles.axesTheta2Dot,'on');    
-    plot(handles.axesTheta2Dot, iPoints,YVPoints(1:i), 'b');
+    plot(handles.axesTheta2Dot, iPoints,theta2DotPoints, 'b');
     hold(handles.axesTheta3Dot,'on');   
-    plot(handles.axesTheta3Dot, iPoints,ZVPoints(1:i), 'b');
+    plot(handles.axesTheta3Dot, iPoints,theta3DotPoints, 'b');
     hold(handles.axesTheta4Dot,'on');    
-    plot(handles.axesTheta4Dot, iPoints,pitchVPoints(1:i), 'b');
+    plot(handles.axesTheta4Dot, iPoints,theta4DotPoints, 'b');
     pause(0.0001);
 
 end
@@ -2050,6 +2106,7 @@ set(handles.sliderInverseX, 'Value', EEffectorY2);
 set(handles.sliderInverseX, 'Value', EEffectorZ2);
 set(handles.sliderInverseX, 'Value', pitch2);
 guidata(hObject,handles)
+
 
 
 % --- Executes on button press in radiobutton2.

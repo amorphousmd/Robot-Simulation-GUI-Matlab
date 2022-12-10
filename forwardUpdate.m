@@ -39,6 +39,7 @@ for d = 1
     global prevZ14;
     global prevZ24;
     global h;
+    global T40;
     delete(prevS1);
     delete(prevS2);
     delete(prevS3);
